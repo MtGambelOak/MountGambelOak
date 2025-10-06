@@ -1,9 +1,9 @@
 [
   {
-    "slug": "ex-1",
-    "title": "example 1",
-    "date": "2025-02-10",
-    "summary": "This is all made up",
-    "template": "blog/posts/example-one.html"
+    "slug": "AdSideline-0",
+    "title": "AdSideline Development Begins!",
+    "date": "2025-10-06",
+    "summary": "Beginning development on a multimodal, real-time AI model that identifies and blocks advertisements during live video streams, such as sports broadcasts.",
+    "template": "blog/posts/AdSideline-0.html"
   }
 ]

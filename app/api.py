@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.status import HTTP_404_NOT_FOUND
@@ -88,7 +88,11 @@ async def blog_html(request: Request):
 async def blog_post(request: Request, slug: str):
     post = POSTS_BY_SLUG.get(slug)
     if not post:
-        raise HTTPException(status_code=404)
+        return templates.TemplateResponse(
+            "404.html",
+            {"request": request, "page_type": "404"},
+            status_code=HTTP_404_NOT_FOUND,
+        )
     return templates.TemplateResponse(
         post["template"],
         {"request": request, "active_page": "blog", "post": post},
