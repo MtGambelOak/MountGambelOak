@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="dark accent-sage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog · Mount Gambel Oak</title>
+  {% include 'includes/head-assets.html' %}
+</head>
+<body>
+  {% set active_page = 'blog' %}
+  {% include 'header.html' %}
+
+  <main class="blog">
+    <section class="blog-hero">
+      <h1>Blog</h1>
+      <p>Check back for updates on what I'm working on, and maybe the occasional philosophical musing.</p>
+    </section>
+
+    <section class="blog-posts">
+      {% if posts %}
+        {% for post in posts %}
+          <article class="blog-card">
+            <header>
+              <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
+              <p class="blog-card-meta">{{ post.date }}</p>
+            </header>
+            <p class="blog-card-summary">{{ post.summary }}</p>
+          </article>
+        {% endfor %}
+      {% else %}
+        <article class="blog-placeholder">
+          <h2>Nothing was found</h2>
+          <p>
+            No blog posts were found, which means either something went horribly wrong, or GambelDev has been
+            shirking his writing. Feel free to judge him silently, or contact him to laugh in his face directly.
+          </p>
+        </article>
+      {% endif %}
+    </section>
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% include 'includes/footer-scripts.html' %}
+</body>
+</html>

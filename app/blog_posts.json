@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "ex-1",
+    "title": "example 1",
+    "date": "2025-02-10",
+    "summary": "This is all made up",
+    "template": "blog/posts/example-one.html"
+  }
+]

@@ -1,0 +1,15 @@
+{% extends 'blog/post_layout.html' %}
+
+{% block page_title %}{{ self.post_title() }}{% endblock %}
+
+{% block post_wrapper %}
+  <article>
+    <header class="blog-post-header">
+      <h1>{% block post_heading %}{{ self.post_title() }}{% endblock %}</h1>
+      <p class="blog-post-date">{% block post_date %}{% endblock %}</p>
+    </header>
+    <div class="blog-post-body">
+      {% block post_body %}{% endblock %}
+    </div>
+  </article>
+{% endblock %}

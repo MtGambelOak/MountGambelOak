@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="dark accent-sage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mount Gambel Oak</title>
+  {% include 'includes/head-assets.html' %}
+</head>
+<body>
+  {% set active_page = 'home' %}
+  {% include 'header.html' %}
+
+  <main>
+    <section class="intro">
+      <figure class="intro-media">
+        <img
+          src="/static/images/gambeldev.jpg"
+          alt="Portrait of Lucas Pearce"
+          loading="lazy"
+        />
+      </figure>
+
+      <div class="intro-content">
+        <p class="eyebrow">👋 Hi, I’m GambelDev</p>
+        <h2>I like to build things. My main areas of interest are NLP and GIS.</h2>
+        <p>
+          I'm currently an undergraduate student at the University of Utah, expected to graduate Spring 2026
+          with a BS in Computer Science and BS in Linguistics. I'm potentially interested in pursuing research
+          in NLP. My main areas of interest are studying multilingual performance of LMs, especially in terms
+          of increasing multilingual performance with data-poor languages. I'm also interested in model interpretability as a whole.
+        </p>
+      </div>
+    </section>
+
+    <section class="intro-note">
+      <p>
+        This website is a place for me to introduce myself, host and showcase personal projects, and likely blog
+        about things I find interesting or things I'm developing. Check out my links in the footer to see more of my stuff!
+      </p>
+    </section>
+
+    <section class="faq">
+      <h2 class="faq-heading">FAQ</h2>
+
+      <article class="faq-item">
+        <h3>Why go by "GambelDev"?</h3>
+        <p>
+          People often have the misconception that the name indicates some inclination to gamble on my part.
+          I personally don't enjoy lighting my money on fire, so that's actually not the case.
+        </p>
+        <p>
+          Gambel has been my "gamertag" for quite a while now. It derives from the oak species <em>Quercus gambelii</em>,
+          a species of oak native to foothills of many western mountain ranges. Found all over the Wasatch Front,
+          this tree is not unlike most oaks in terms of its ecological importance. As my favorite plant, I took
+          a liking to its name.
+        </p>
+        <p>
+          Occasionally in writing I refer to myself in the third person as "GambelDev". I hope this doesn't
+          give off the impression that I'm some kind of eccentric, it's mostly a stylistic choice I find personally humorous.
+        </p>
+      </article>
+
+      <article class="faq-item">
+        <h3>What's with the seasonal emojis in the footer and favicon?</h3>
+        <p>
+          Honestly, I just like holidays and getting into a "seasonal mood". I thought adding emojis
+          based on the season or holiday would be nice flair for the website. The favicon is sometimes fickle
+          in terms of it updating (especially on bookmarks) - this is due to browser caching which can be
+          inconsistent among browsers and operating systems.
+        </p>
+        <p>
+          Be sure to check back regularly to see all the cool different seasonal icons :)
+        </p>
+      </article>
+    </section>
+
+    {% if latest_post %}
+    <section class="latest-post">
+      <h2>Latest Blog Post</h2>
+      <article class="latest-post-card">
+        <header>
+          <h3><a href="/blog/{{ latest_post.slug }}">{{ latest_post.title }}</a></h3>
+          <p class="latest-post-meta">{{ latest_post.date }}</p>
+        </header>
+        <p class="latest-post-summary">{{ latest_post.summary }}</p>
+      </article>
+    </section>
+    {% endif %}
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% include 'includes/footer-scripts.html' %}
+</body>
+</html>

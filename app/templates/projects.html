@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="dark accent-sage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects · Mount Gambel Oak</title>
+  {% include 'includes/head-assets.html' %}
+</head>
+<body>
+  {% set active_page = 'projects' %}
+  {% include 'header.html' %}
+
+  <main class="projects">
+    <section class="projects-hero">
+      <h1>Projects</h1>
+      <p>Personal projects I've been working on. I like to build things that solve problems in my life.</p>
+    </section>
+
+    <section class="projects-grid">
+      <article class="project-card">
+        <div class="project-meta">
+          <h2>PitchParse</h2>
+          <span class="project-year">Summer 2024</span>
+        </div>
+        <p class="project-summary">
+          Generates custom Japanese study decks by filtering vocab lists on frequency, minimal pairs, and learner status.
+          Built to give pitch-accent learners structured practice based on guidance in the NHK Pitch Accent Dictionary.
+        </p>
+        <ul class="project-details">
+          <li>Ships with accent data compiled from various sources, and a Yomitan dictionary to match.</li>
+          <li>In the best case, can make learning pitch accent 30% faster.</li> 
+          <li>Allows users to focus on language practice that matters more.</li>                    
+        </ul>
+        <div class="project-links">
+          <a class="btn" href="https://github.com/MtGambelOak/pitchparse" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta">
+          <h2>CreatureFinder</h2>
+          <span class="project-year">Fall 2025 - Present</span>
+        </div>
+        <p class="project-summary">
+          My team's senior capstone project, focusing on combining iNaturalist observation data with GIS data
+          from various sources to provide insights on the distribution and habitats of hundreds of thousands of species.
+        </p>
+        <ul class="project-details">
+          <li>Populate description/field guide for species automatically.</li>
+          <li>Provide a list of flowers that are in bloom nearby, or birds that are migrating through the region, for example.</li> 
+          <li>Planning on migrating to an open-source project upon the conclusion of our senior capstone.</li>                    
+        </ul>
+      </article>
+
+      <article class="project-card">
+        <div class="project-meta">
+          <h2>AdHide</h2>
+          <span class="project-year">Fall 2025 - Present</span>
+        </div>
+        <p class="project-summary">
+          A project focusing, on a high level, to address the pervasive problem of annoying, unhelpful,
+          and even downright harmful ads encountered while watching live TV, such as a sports broadcast.
+          The recent surge in unregulated sports betting advertising was an impetus in the creation of
+          this project - yes, I'm looking at you, Kevin Hart and LeBron. See
+          <a href="https://github.com/RG-O/YoutubeOverCommercials" target="_blank" rel="noopener">YoutubeOverCommercials</a>
+          for a solution that works quite well. I want this to work even if there is no reliable logo to detect
+          on the broadcast, and also to explore how to fight pervasive advertisements using AI in general.
+        </p>
+        <ul class="project-details">
+          <li>Take live transcription and classify sentences into broadcast content or advertisements.</li>    
+          <li>Somewhere down the line, incorporate image processing to detect visual advertisements and ad banner boundaires.</li>
+          <li>Train a classifier to take this kind of data as input, and hide ads with an overlay and/or muting.</li>             
+          <li>Optimize the model enough to the point where it doesn't take a 4000 series NVIDIA GPU to run it.</li>
+        </ul>
+      </article>
+
+    </section>
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% include 'includes/footer-scripts.html' %}
+</body>
+</html>

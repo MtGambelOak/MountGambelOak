@@ -1,0 +1,12 @@
+# Python / build
+venv/
+__pycache__/
+dist/
+*.pyc
+
+# Container / server configs
+Dockerfile
+docker-compose.yml
+Caddyfile
+.dockerignore
+

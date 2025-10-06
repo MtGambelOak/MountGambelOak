@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" class="dark accent-sage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page Not Found · Mount Gambel Oak</title>
+  {% include 'includes/head-assets.html' %}
+</head>
+<body>
+  {% set page_kind = page_type | default('404') %}
+  {% include 'header.html' %}
+
+  <main class="not-found">
+    <span class="not-found-emoji" aria-hidden="true">🧭</span>
+    <h1>Lost?</h1>
+    <p class="not-found-subhead">
+      Either you wandered off the map or you tapped the footer emoji. Either way, enjoy a blurb about this time of year before heading back.
+    </p>
+
+    <div class="not-found-actions">
+      <a class="btn" href="/">Return Home</a>
+    </div>
+
+    <div class="holiday-trivia" id="holiday-trivia" data-ready="false" aria-live="polite">
+      <h2 class="holiday-trivia-heading">
+        <span data-holiday-emoji role="img" aria-label="Seasonal emoji">🗓️</span>
+        <span data-holiday-name>Seasonal Snapshot</span>
+      </h2>
+      <p class="holiday-trivia-fact" data-holiday-fact>Loading today’s fact…</p>
+    </div>
+
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% include 'includes/footer-scripts.html' %}
+</body>
+</html>

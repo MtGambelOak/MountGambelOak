@@ -1,0 +1,51 @@
+<header class="site-header">
+  <h1>GambelDev</h1>
+
+  <nav>
+    <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
+    <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
+    <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
+    <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
+  </nav>
+
+  <div class="theme-wrapper">
+    <button id="theme-config-btn" aria-label="Open theme settings">
+      Theme
+    </button>
+
+    <div id="theme-config-popup" class="hidden" role="dialog" aria-modal="true" aria-labelledby="theme-config-title">
+      <h3 id="theme-config-title">Theme</h3>
+
+      <div>
+        <label><input type="radio" name="mode" value="light" /><span>Light</span></label>
+        <label><input type="radio" name="mode" value="dark" /><span>Dark</span></label>
+      </div>
+
+      <div>
+        <p>Accent Color:</p>
+
+        <!-- WARM TONES -->
+        <button class="accent-choice" data-accent="red" style="background:#8B0000" title="Red"></button>
+        <button class="accent-choice" data-accent="salmon" style="background:#FA8072" title="Salmon"></button>
+        <button class="accent-choice" data-accent="orange" style="background:#D2691E" title="Orange"></button>
+        <button class="accent-choice" data-accent="goldenrod" style="background:#DAA520" title="Goldenrod"></button>
+
+        <!-- EARTH TONES -->
+        <button class="accent-choice" data-accent="brown" style="background:#964B00" title="Brown"></button>
+        <button class="accent-choice" data-accent="sage" style="background:#5A7A39" title="Sage"></button>
+        <button class="accent-choice" data-accent="green" style="background:#228B22" title="Green"></button>
+
+        <!-- COOL TONES -->
+        <button class="accent-choice" data-accent="berry" style="background:#9F5F9F" title="Berry"></button>
+        <button class="accent-choice" data-accent="purple" style="background:#6A0DAD" title="Purple"></button>
+
+        <!-- GRAYSCALE -->
+        <button class="accent-choice" data-accent="white" style="background:#ffffff" title="White"></button>
+        <button class="accent-choice" data-accent="gray" style="background:#808080" title="Gray"></button>
+        <button class="accent-choice" data-accent="black" style="background:#000000" title="Black"></button>
+      </div>
+
+      <button id="theme-config-close">Close</button>
+    </div>
+  </div>
+</header>

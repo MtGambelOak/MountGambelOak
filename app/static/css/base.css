@@ -1,0 +1,58 @@
+:root {
+  /* Common variables */
+  --font-family: sans-serif;
+  --btn-radius: 6px;
+  --btn-padding: 0.75rem 1.5rem;
+  --btn-transition: background-color 0.3s ease;
+  --main-max-width: 768px;
+  --main-radius: 8px;
+
+  /* fallback accent */
+  --accent: #888888;
+
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  max-width: var(--main-max-width);
+  background: var(--main-bg);
+  margin: 2rem auto;
+  padding: 2.5rem;
+  border-radius: var(--main-radius);
+  text-align: left;
+  flex: 1;
+  width: 100%;
+}
+
+main p {
+  font-size: 1.05rem;
+  color: var(--main-text);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  padding: var(--btn-padding);
+  border-radius: var(--btn-radius);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  transition: var(--btn-transition);
+  margin: 0.5rem 0;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+}

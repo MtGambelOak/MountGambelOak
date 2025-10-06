@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" class="dark accent-sage">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block page_title %}Blog{% endblock %} · Mount Gambel Oak</title>
+  {% include 'includes/head-assets.html' %}
+</head>
+<body>
+  {% set active_page = 'blog' %}
+  {% include 'header.html' %}
+
+  <main class="blog-post">
+    {% block post_wrapper %}{% endblock %}
+  </main>
+
+  {% include 'footer.html' %}
+
+  {% include 'includes/footer-scripts.html' %}
+</body>
+</html>
