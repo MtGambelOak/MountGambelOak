@@ -9,7 +9,7 @@ SRC_DIR = "app"
 TEMPLATES = os.path.join(SRC_DIR, "templates")
 STATIC = os.path.join(SRC_DIR, "static")
 DIST = "dist"
-BLOG_POSTS_FILE = os.path.join(SRC_DIR, "blog_posts.json")
+BLOG_POSTS_FILE = os.path.join(SRC_DIR, "/blog/blog_posts.json")
 WORDS_PER_MINUTE = 200
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
