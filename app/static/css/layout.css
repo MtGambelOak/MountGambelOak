@@ -722,6 +722,23 @@ article p + p {
   text-align: right;
 }
 
+.post-comments {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.dark .post-comments {
+  border-top-color: rgba(255, 255, 255, 0.12);
+}
+
+.post-comments h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
 @media (max-width: 1024px) {
   .blog-post-layout {
     flex-direction: column;
