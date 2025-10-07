@@ -1,4 +1,22 @@
-/* Make colors come from theme variables rather than fixed dark colors */
+:root {
+  color-scheme: dark;
+  --bg: #121212;
+  --text: #f5f5f5;
+
+  --link: #e0e0e0;
+  --link-hover: #ffffff;
+
+  --input-bg: rgba(255,255,255,0.05);
+  --input-border: rgba(255,255,255,0.15);
+  --input-border-hover: rgba(255,255,255,0.4);
+  --input-outline: rgba(255,255,255,0.5);
+
+  --comment-bg: rgba(255,255,255,0.06);
+  --timeline-border: rgba(255,255,255,0.1);
+  --timeline-border2: rgba(255,255,255,0.15);
+  --timeline-bg: rgba(255,255,255,0.04);
+}
+
 body {
   background-color: var(--bg);
   color: var(--text);
@@ -6,12 +24,12 @@ body {
 }
 
 a {
-  color: var(--accent-text, var(--accent));
+  color: var(--link);
   text-decoration: none;
 }
 
 a:hover {
-  color: var(--nav-link-hover, var(--accent));
+  color: var(--link-hover);
   text-decoration: underline;
 }
 
@@ -20,28 +38,27 @@ input,
 textarea {
   font: inherit;
   color: inherit;
-  background-color: var(--input-bg, rgba(0,0,0,0.04));
-  border: 1px solid var(--input-border, rgba(0,0,0,0.12));
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
 }
 
 button:hover,
 input:hover,
 textarea:hover {
-  border-color: var(--input-border-hover, rgba(142,178,136,0.5));
+  border-color: var(--input-border-hover);
 }
 
 button:focus,
 input:focus,
 textarea:focus {
-  outline: 2px solid var(--input-outline, rgba(142,178,136,0.6));
+  outline: 2px solid var(--input-outline);
   outline-offset: 2px;
 }
 
-/* Comments / timeline */
 .gsc-comment-box-textarea,
 .gsc-comment-box-input {
-  background-color: var(--comment-bg, rgba(0,0,0,0.05));
+  background-color: var(--comment-bg);
 }
 
 .gsc-reaction-button,
@@ -53,19 +70,19 @@ textarea:focus {
 
 .gsc-reaction-button:hover,
 .gsc-comment-action:hover {
-  color: var(--accent-text, var(--accent));
+  color: var(--link-hover);
 }
 
 .gsc-timeline {
-  border-left: 2px solid var(--timeline-border, rgba(0,0,0,0.08));
+  border-left: 2px solid var(--timeline-border);
 }
 
 .gsc-timeline-item {
-  background-color: var(--timeline-bg, rgba(0,0,0,0.04));
-  border: 1px solid var(--timeline-border2, rgba(0,0,0,0.08));
+  background-color: var(--timeline-bg);
+  border: 1px solid var(--timeline-border2);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
 }
 
 .gsc-timeline-item + .gsc-timeline-item {
@@ -73,7 +90,7 @@ textarea:focus {
 }
 
 .gsc-comment-author {
-  color: var(--accent-text, var(--accent));
+  color: var(--link-hover);
   font-weight: 600;
 }
 
@@ -83,10 +100,10 @@ textarea:focus {
 
 .gsc-comment-content pre,
 .gsc-comment-content code {
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(255,255,255,0.1);
   border-radius: 6px;
 }
 
 .gsc-loader {
-  color: var(--accent-text, var(--accent));
+  color: var(--link-hover);
 }
