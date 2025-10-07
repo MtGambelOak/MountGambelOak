@@ -1,20 +1,17 @@
-:root {
-  color-scheme: dark;
-}
-
+/* Make colors come from theme variables rather than fixed dark colors */
 body {
-  background-color: #121212;
-  color: #f4f4f4;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 a {
-  color: #8eb288;
+  color: var(--accent-text, var(--accent));
   text-decoration: none;
 }
 
 a:hover {
-  color: #a1c79c;
+  color: var(--nav-link-hover, var(--accent));
   text-decoration: underline;
 }
 
@@ -23,27 +20,28 @@ input,
 textarea {
   font: inherit;
   color: inherit;
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: var(--input-bg, rgba(0,0,0,0.04));
+  border: 1px solid var(--input-border, rgba(0,0,0,0.12));
   border-radius: 8px;
 }
 
 button:hover,
 input:hover,
 textarea:hover {
-  border-color: rgba(142, 178, 136, 0.5);
+  border-color: var(--input-border-hover, rgba(142,178,136,0.5));
 }
 
 button:focus,
 input:focus,
 textarea:focus {
-  outline: 2px solid rgba(142, 178, 136, 0.6);
+  outline: 2px solid var(--input-outline, rgba(142,178,136,0.6));
   outline-offset: 2px;
 }
 
+/* Comments / timeline */
 .gsc-comment-box-textarea,
 .gsc-comment-box-input {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--comment-bg, rgba(0,0,0,0.05));
 }
 
 .gsc-reaction-button,
@@ -55,19 +53,19 @@ textarea:focus {
 
 .gsc-reaction-button:hover,
 .gsc-comment-action:hover {
-  color: #8eb288;
+  color: var(--accent-text, var(--accent));
 }
 
 .gsc-timeline {
-  border-left: 2px solid rgba(255, 255, 255, 0.08);
+  border-left: 2px solid var(--timeline-border, rgba(0,0,0,0.08));
 }
 
 .gsc-timeline-item {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--timeline-bg, rgba(0,0,0,0.04));
+  border: 1px solid var(--timeline-border2, rgba(0,0,0,0.08));
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.25);
 }
 
 .gsc-timeline-item + .gsc-timeline-item {
@@ -75,7 +73,7 @@ textarea:focus {
 }
 
 .gsc-comment-author {
-  color: #c4dbc2;
+  color: var(--accent-text, var(--accent));
   font-weight: 600;
 }
 
@@ -90,5 +88,5 @@ textarea:focus {
 }
 
 .gsc-loader {
-  color: #8eb288;
+  color: var(--accent-text, var(--accent));
 }
