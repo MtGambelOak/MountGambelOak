@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-import re
+import markdown
 
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
@@ -26,30 +26,32 @@ except FileNotFoundError:
     BLOG_POSTS = []
 
 WORDS_PER_MINUTE = 200
-HEADING_PATTERN = re.compile(r"<h2>(.*?)</h2>", re.DOTALL)
 
 def add_derived_metadata(post):
-    body_template = post.get("template")
     post = dict(post)
-    if not body_template:
-        post["headings"] = []
-        return post
+    content_path = _BASE_DIR / post.get("content", "")
     try:
-        template_path = _BASE_DIR / "templates" / body_template
-        content = template_path.read_text(encoding="utf-8")
+        markdown_text = content_path.read_text(encoding="utf-8")
     except FileNotFoundError:
+        markdown_text = ""
+
+    if markdown_text:
+        md = markdown.Markdown(extensions=["fenced_code", "tables", "toc"])
+        html = md.convert(markdown_text)
+        toc_tokens = md.toc_tokens or []
+        headings = []
+        for token in toc_tokens:
+            if token.get("level") == 2:
+                headings.append({"id": token.get("id"), "title": token.get("name")})
+        md.reset()
+
+        post["content_html"] = html
+        post["headings"] = headings
+        word_count = len(markdown_text.split())
+        post["reading_time_minutes"] = max(1, round(word_count / WORDS_PER_MINUTE))
+    else:
+        post["content_html"] = ""
         post["headings"] = []
-        return post
-
-    word_count = len(content.split())
-    post["reading_time_minutes"] = max(1, round(word_count / WORDS_PER_MINUTE))
-
-    headings = []
-    for match in HEADING_PATTERN.finditer(content):
-        text = match.group(1).strip()
-        slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
-        headings.append({"id": slug, "title": text})
-    post["headings"] = headings
 
     return post
 
@@ -154,7 +156,7 @@ async def blog_post(request: Request, slug: str):
     next_post = BLOG_POSTS[index + 1] if index + 1 < len(BLOG_POSTS) else None
 
     return templates.TemplateResponse(
-        post["template"],
+        "blog/post.html",
         {
             "request": request,
             "active_page": "blog",
