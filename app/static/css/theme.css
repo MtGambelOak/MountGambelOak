@@ -7,6 +7,7 @@
   --footer-text: #3e3e3e;
   --footer-bg-opacity: 0.5;
   --btn-text: #000000;
+  --accent-text: var(--accent);
 }
 
 .dark {
@@ -17,6 +18,7 @@
   --footer-text: #fff;
   --footer-bg-opacity: 1;
   --btn-text: #fff;
+  --accent-text: var(--accent);
 }
 
 /* Accent palettes */

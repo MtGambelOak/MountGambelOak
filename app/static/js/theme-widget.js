@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const accentButtons = document.querySelectorAll('.accent-choice');
   const root = document.documentElement;
   const themedIcons = document.querySelectorAll('.icon-image');
+  const themeUtils = window.__themeUtils || {};
 
   // Load saved settings or use fallback defaults
   const savedMode = localStorage.getItem('theme-mode') || 'dark';
@@ -32,9 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
       'light', 'dark'
     );
     if (accent) root.classList.add(`accent-${accent}`);
-    if (mode) {
-      root.classList.add(mode);
-      updateIconsForMode(mode);
+    if (mode) root.classList.add(mode);
+
+    const resolvedMode = mode || (root.classList.contains('light') ? 'light' : 'dark');
+    updateIconsForMode(resolvedMode);
+
+    if (typeof themeUtils.updateAccentTextColor === 'function') {
+      themeUtils.updateAccentTextColor(resolvedMode);
+    } else {
+      root.style.removeProperty('--accent-text');
     }
   }
 
@@ -89,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const accent = e.target.dataset.accent;
       const mode = localStorage.getItem('theme-mode') || 'dark';
       applyTheme(accent, mode);
-      updateIconsForMode(mode);
       localStorage.setItem('theme-accent', accent);
       highlightAccent(accent);
     });
