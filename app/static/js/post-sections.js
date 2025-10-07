@@ -84,6 +84,20 @@
     if (activeId) setActive(activeId);
   }
 
+  function findRangeById(id) {
+    for (var i = 0; i < layout.ranges.length; i++) {
+      if (layout.ranges[i].id === id) return layout.ranges[i];
+    }
+    return null;
+  }
+
+  function scrollDocumentToPercent(percent) {
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var adjusted = clamp01(percent + 0.01); // nudge down an extra 1%
+    var target = adjusted * (docHeight || 1);
+    window.scrollTo({ top: target, behavior: 'smooth' });
+  }
+
   var ticking = false;
   function requestUpdate(fn) {
     if (ticking) return;
@@ -114,6 +128,18 @@
   outline.addEventListener('click', function (event) {
     var link = event.target.closest('a[data-heading-id]');
     if (!link) return;
-    setActive(link.dataset.headingId);
+    event.preventDefault();
+    var headingId = link.dataset.headingId;
+    setActive(headingId);
+
+    if (!layout.ranges.length) measureLayout();
+    var range = findRangeById(headingId);
+
+    if (range) {
+      scrollDocumentToPercent(range.start);
+    } else {
+      var node = document.getElementById(headingId);
+      if (node) node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 })();
