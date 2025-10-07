@@ -13,7 +13,7 @@ templates.env.auto_reload = True
 templates.env.cache = {}
 
 _BASE_DIR = Path(__file__).resolve().parent
-_BLOG_POSTS_FILE = _BASE_DIR / "blog/blog_posts.json"
+_BLOG_POSTS_FILE = _BASE_DIR / "blog" / "blog_posts.json"
 try:
     with _BLOG_POSTS_FILE.open("r", encoding="utf-8") as f:
         raw_posts = json.load(f)
