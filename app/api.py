@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
@@ -15,9 +16,44 @@ _BASE_DIR = Path(__file__).resolve().parent
 _BLOG_POSTS_FILE = _BASE_DIR / "blog_posts.json"
 try:
     with _BLOG_POSTS_FILE.open("r", encoding="utf-8") as f:
-        BLOG_POSTS = json.load(f)
+        raw_posts = json.load(f)
+        BLOG_POSTS = sorted(
+            (dict(post) for post in raw_posts),
+            key=lambda post: post.get("date", ""),
+            reverse=True,
+        )
 except FileNotFoundError:
     BLOG_POSTS = []
+
+WORDS_PER_MINUTE = 200
+HEADING_PATTERN = re.compile(r"<h2>(.*?)</h2>", re.DOTALL)
+
+def add_derived_metadata(post):
+    body_template = post.get("template")
+    post = dict(post)
+    if not body_template:
+        post["headings"] = []
+        return post
+    try:
+        template_path = _BASE_DIR / "templates" / body_template
+        content = template_path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        post["headings"] = []
+        return post
+
+    word_count = len(content.split())
+    post["reading_time_minutes"] = max(1, round(word_count / WORDS_PER_MINUTE))
+
+    headings = []
+    for match in HEADING_PATTERN.finditer(content):
+        text = match.group(1).strip()
+        slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+        headings.append({"id": slug, "title": text})
+    post["headings"] = headings
+
+    return post
+
+BLOG_POSTS = [add_derived_metadata(post) for post in BLOG_POSTS]
 
 POSTS_BY_SLUG = {post.get("slug"): post for post in BLOG_POSTS if post.get("slug")}
 
@@ -62,40 +98,70 @@ async def projects_html(request: Request):
 
 @router.get("/blog", response_class=HTMLResponse)
 async def blog(request: Request):
+    all_tags = sorted({tag for post in BLOG_POSTS for tag in post.get("tags", [])})
     return templates.TemplateResponse(
         "blog.html",
-        {"request": request, "active_page": "blog", "posts": BLOG_POSTS},
+        {
+            "request": request,
+            "active_page": "blog",
+            "posts": BLOG_POSTS,
+            "all_tags": all_tags,
+        },
     )
 
 
 @router.get("/blog/", response_class=HTMLResponse, include_in_schema=False)
 async def blog_slash(request: Request):
+    all_tags = sorted({tag for post in BLOG_POSTS for tag in post.get("tags", [])})
     return templates.TemplateResponse(
         "blog.html",
-        {"request": request, "active_page": "blog", "posts": BLOG_POSTS},
+        {
+            "request": request,
+            "active_page": "blog",
+            "posts": BLOG_POSTS,
+            "all_tags": all_tags,
+        },
     )
 
 
 @router.get("/blog.html", response_class=HTMLResponse, include_in_schema=False)
 async def blog_html(request: Request):
+    all_tags = sorted({tag for post in BLOG_POSTS for tag in post.get("tags", [])})
     return templates.TemplateResponse(
         "blog.html",
-        {"request": request, "active_page": "blog", "posts": BLOG_POSTS},
+        {
+            "request": request,
+            "active_page": "blog",
+            "posts": BLOG_POSTS,
+            "all_tags": all_tags,
+        },
     )
 
 
 @router.get("/blog/{slug}", response_class=HTMLResponse)
 async def blog_post(request: Request, slug: str):
-    post = POSTS_BY_SLUG.get(slug)
-    if not post:
+    try:
+        index = next(i for i, p in enumerate(BLOG_POSTS) if p.get("slug") == slug)
+    except StopIteration:
         return templates.TemplateResponse(
             "404.html",
             {"request": request, "page_type": "404"},
             status_code=HTTP_404_NOT_FOUND,
         )
+
+    post = BLOG_POSTS[index]
+    prev_post = BLOG_POSTS[index - 1] if index > 0 else None
+    next_post = BLOG_POSTS[index + 1] if index + 1 < len(BLOG_POSTS) else None
+
     return templates.TemplateResponse(
         post["template"],
-        {"request": request, "active_page": "blog", "post": post},
+        {
+            "request": request,
+            "active_page": "blog",
+            "post": post,
+            "prev_post": prev_post,
+            "next_post": next_post,
+        },
     )
 
 

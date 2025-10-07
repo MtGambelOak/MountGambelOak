@@ -4,6 +4,8 @@
     "title": "AdSideline Development Begins!",
     "date": "2025-10-06",
     "summary": "Beginning development on a multimodal, real-time AI model that identifies and blocks advertisements during live video streams, such as sports broadcasts.",
-    "template": "blog/posts/AdSideline-0.html"
+    "template": "blog/posts/AdSideline-0.html",
+    "tags": ["AdSideline", "Development Update", "NLP", "ML"],
+    "updated": "2025-10-06"
   }
 ]

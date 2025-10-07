@@ -3,13 +3,47 @@
 {% block page_title %}{{ self.post_title() }}{% endblock %}
 
 {% block post_wrapper %}
-  <article>
-    <header class="blog-post-header">
-      <h1>{% block post_heading %}{{ self.post_title() }}{% endblock %}</h1>
-      <p class="blog-post-date">{% block post_date %}{% endblock %}</p>
-    </header>
-    <div class="blog-post-body">
-      {% block post_body %}{% endblock %}
-    </div>
-  </article>
+  <div class="blog-post-layout">
+    {% if post.headings %}
+    <aside class="post-outline" aria-label="Section navigation">
+      <p class="post-outline-title">On this page</p>
+      <ol>
+        {% for heading in post.headings %}
+        <li><a href="#{{ heading.id }}" data-heading-id="{{ heading.id }}">{{ heading.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </aside>
+    {% endif %}
+    <article class="post-article">
+      <header class="blog-post-header">
+        <h1>{% block post_heading %}{{ self.post_title() }}{% endblock %}</h1>
+        <p class="blog-post-date">
+          <span>{% block post_date %}{% endblock %}</span>
+          {% if post.updated and post.updated != post.date %}
+          <span>Updated {{ post.updated }}</span>
+          {% endif %}
+          {% if post.reading_time_minutes %}
+          <span>{{ post.reading_time_minutes }} min read</span>
+          {% endif %}
+        </p>
+      </header>
+      {% block post_tags %}{% endblock %}
+      <div class="blog-post-body">
+        {% block post_body %}{% endblock %}
+      </div>
+      {% if prev_post or next_post %}
+      <nav class="blog-post-nav" aria-label="Post navigation">
+        {% if prev_post %}
+        <a class="post-nav-link prev" href="/blog/{{ prev_post.slug }}">Previous post</a>
+        {% endif %}
+        {% if next_post %}
+        <a class="post-nav-link next" href="/blog/{{ next_post.slug }}">Next post</a>
+        {% endif %}
+      </nav>
+      {% endif %}
+    </article>
+  </div>
+  {% if post.headings %}
+  <script>window.__POST_HEADINGS__ = {{ post.headings | tojson }};</script>
+  {% endif %}
 {% endblock %}

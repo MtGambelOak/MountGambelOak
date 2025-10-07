@@ -2,7 +2,18 @@
 
 {% block post_title %}AdSideline Development Begins!{% endblock %}
 {% block post_date %}October 6, 2025{% endblock %}
+{% block post_tags %}
+{% if post.tags %}
+<ul class="blog-post-tags">
+  {% for tag in post.tags %}
+  <li><a class="tag-chip" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
+
 {% block post_body %}
+
 <p>
   How ironic that GambelDev's tipping point when it comes to live sports advertisements would be
   sports gambling ads? If advertisers instead showed me beautiful pictures of oak foliage, I probably wouldn't complain.

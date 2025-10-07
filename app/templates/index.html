@@ -77,12 +77,27 @@
     {% if latest_post %}
     <section class="latest-post">
       <h2>Latest Blog Post</h2>
-      <article class="latest-post-card">
+      <article class="blog-card" data-tags="{{ latest_post.tags | default([], true) | join(' ') }}">
         <header>
           <h3><a href="/blog/{{ latest_post.slug }}">{{ latest_post.title }}</a></h3>
-          <p class="latest-post-meta">{{ latest_post.date }}</p>
+          <p class="blog-card-meta">
+            <span>{{ latest_post.date }}</span>
+            {% if latest_post.updated and latest_post.updated != latest_post.date %}
+            <span>Updated {{ latest_post.updated }}</span>
+            {% endif %}
+            {% if latest_post.reading_time_minutes %}
+            <span>{{ latest_post.reading_time_minutes }} min read</span>
+            {% endif %}
+          </p>
         </header>
-        <p class="latest-post-summary">{{ latest_post.summary }}</p>
+        <p class="blog-card-summary">{{ latest_post.summary }}</p>
+        {% if latest_post.tags %}
+        <ul class="blog-card-tags">
+          {% for tag in latest_post.tags %}
+          <li><a class="tag-chip" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
       </article>
     </section>
     {% endif %}
