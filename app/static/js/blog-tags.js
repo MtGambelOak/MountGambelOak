@@ -17,10 +17,13 @@
     postCards.forEach(card => {
       if (tag === 'all') {
         card.hidden = false;
+        card.classList.remove('blog-card--hidden');
         return;
       }
-      const tags = (card.dataset.tags || '').split(/\s+/).filter(Boolean);
-      card.hidden = !tags.includes(tag);
+      const tags = parseTags(card.dataset.tags);
+      const shouldHide = !tags.includes(tag);
+      card.hidden = shouldHide;
+      card.classList.toggle('blog-card--hidden', shouldHide);
     });
   }
 
@@ -29,6 +32,7 @@
     if (!button) return;
     const tag = button.dataset.tag;
     if (!tag) return;
+    event.preventDefault();
     updateQuery(tag);
     activate(tag);
   });
@@ -39,6 +43,7 @@
       if (!button) return;
       const tag = button.dataset.tag;
       if (!tag) return;
+      event.preventDefault();
       updateQuery(tag);
       activate(tag);
       const targetFilter = Array.from(filterButtons).find(btn => btn.dataset.tag === tag);
@@ -70,4 +75,12 @@
   }
 
   init();
+
+  function parseTags(raw) {
+    if (!raw) return [];
+    if (raw.includes('||')) {
+      return raw.split('||').map(tag => tag.trim()).filter(Boolean);
+    }
+    return raw.split(/\s+/).map(tag => tag.trim()).filter(Boolean);
+  }
 })();

@@ -28,7 +28,7 @@
         {% endif %}
         <div class="blog-card-list">
           {% for post in posts %}
-          <article class="blog-card" data-tags="{{ post.tags | default([], true) | join(' ') }}">
+          <article class="blog-card" data-tags="{{ post.tags | default([], true) | join('||') }}">
             <header>
               <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
               <p class="blog-card-meta">
@@ -45,7 +45,7 @@
             {% if post.tags %}
             <ul class="blog-card-tags">
               {% for tag in post.tags %}
-              <li><button type="button" class="tag-chip" data-tag="{{ tag }}">{{ tag }}</button></li>
+              <li><a class="tag-chip" data-tag="{{ tag }}" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
               {% endfor %}
             </ul>
             {% endif %}

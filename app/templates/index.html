@@ -77,7 +77,7 @@
     {% if latest_post %}
     <section class="latest-post">
       <h2>Latest Blog Post</h2>
-      <article class="blog-card" data-tags="{{ latest_post.tags | default([], true) | join(' ') }}">
+      <article class="blog-card" data-tags="{{ latest_post.tags | default([], true) | join('||') }}">
         <header>
           <h3><a href="/blog/{{ latest_post.slug }}">{{ latest_post.title }}</a></h3>
           <p class="blog-card-meta">
@@ -94,7 +94,7 @@
         {% if latest_post.tags %}
         <ul class="blog-card-tags">
           {% for tag in latest_post.tags %}
-          <li><a class="tag-chip" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
+          <li><a class="tag-chip" data-tag="{{ tag }}" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
           {% endfor %}
         </ul>
         {% endif %}

@@ -504,6 +504,10 @@ article p + p {
   gap: 1.5rem;
 }
 
+.blog-card--hidden {
+  display: none !important;
+}
+
 .blog-card-tags {
   list-style: none;
   margin: 0;
