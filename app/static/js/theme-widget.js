@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // saved state
   const savedMode = localStorage.getItem('theme-mode') || 'system';
   const savedAccent = localStorage.getItem('theme-accent') || getHolidayAccent(new Date());
-  const savedCustomAccent = localStorage.getItem('last-custom-accent') || 'sage';
+  const savedCustomAccent = localStorage.getItem('last-custom-accent') || getHolidayAccent(new Date());
 
   // --- Accent palette
   const accents = {
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         highlightAccent(''); // none selected
       } else {
         // revert to last custom
-        const lastAccent = localStorage.getItem('last-custom-accent') || 'sage';
+        const lastAccent = localStorage.getItem('last-custom-accent') || getHolidayAccent(new Date());
         localStorage.setItem('theme-accent', lastAccent);
         applyTheme(lastAccent, mode);
         highlightAccent(lastAccent);
