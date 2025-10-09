@@ -1,3 +1,104 @@
+  <script>
+/* --- HolidaySchedule core --- */
+(function (root, factory) {
+  root.HolidaySchedule = factory();
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  const HOLIDAY_RANGES = [
+    { name: 'newyear', start: '01-01', end: '01-04', emoji: '🎊' },
+    { name: 'mlkday',  nthWeekday: { month: 1, weekday: 1, nth: 3 }, emoji: '📜' },
+    { name: 'valentine', start: '02-14', end: '02-14', emoji: '💌' },
+    { name: 'superbowl', nthWeekday: { month: 2, weekday: 0, nth: 2 }, emoji: '🏈' },
+    { name: 'leapday', start: '02-29', end: '02-29', emoji: '🐸' },
+    { name: 'piday', start: '03-14', end: '03-14', emoji: '🥧' },
+    { name: 'stpatricks', start: '03-17', end: '03-17', emoji: '☘️' },
+    { name: 'marchmadness', emoji: '🏀' },
+    { name: 'springequinox', start: '03-20', end: '03-20', emoji: '🌅' },
+    { name: 'aprilfools', start: '04-01', end: '04-01', emoji: '🎭' },
+    { name: 'easter', bufferBefore: 2, bufferAfter: 2, emoji: '🐇' },
+    { name: 'earthday', start: '04-22', end: '04-22', emoji: '🌍' },
+    { name: 'cincodemayo', start: '05-05', end: '05-05', emoji: '🎺' },
+    { name: 'juneteenth', start: '06-19', end: '06-19', emoji: '✊🏿' },
+    { name: 'summersolstice', start: '06-21', end: '06-21', emoji: '☀️' },
+    { name: 'utahindependence', start: '07-24', end: '07-24', emoji: '🎆' },
+    { name: 'perseids', start: '08-11', end: '08-13', emoji: '🌠' },
+    { name: 'laborday', nthWeekday: { month: 9, weekday: 1, nth: 1 }, emoji: '💪' },
+    { name: 'fallequinox', start: '09-21', end: '09-21', emoji: '🌇' },
+    { name: 'halloween', start: '10-20', end: '10-31', emoji: '🎃' },
+    { name: 'thanksgivingUS', nthWeekday: { month: 11, weekday: 4, nth: 4 }, bufferBefore: 3, bufferAfter: 3, emoji: '🦃' },
+    { name: 'wintersolstice', start: '12-21', end: '12-21', emoji: '❄️' },
+    { name: 'holidays', start: '12-10', end: '12-23', emoji: '🎄' },
+    { name: 'christmaseve', start: '12-24', end: '12-24', emoji: '🎅' },
+    { name: 'christmas', start: '12-25', end: '12-25', emoji: '🎁' },
+    { name: 'afterxmas', start: '12-26', end: '12-30', emoji: '🪾' },
+    { name: 'newyearseve', start: '12-31', end: '12-31', emoji: '🪩' },
+  ];
+  const MONTHLY_FALLBACKS = ['🗻','🌨️','🍃','🌷','🐝','🌳','🌞','🌻','🪵','🍂','🍠','🌲'];
+
+  function parseMonthDay(md){const [m,d]=md.split('-').map(Number);return{month:m,day:d};}
+  function dateInRange(date,s,e){
+    const y=date.getFullYear();
+    const {month:sm,day:sd}=parseMonthDay(s);
+    const {month:em,day:ed}=parseMonthDay(e);
+    const start=new Date(y,sm-1,sd);
+    let end=new Date(y,em-1,ed,23,59,59,999);
+    if(end<start){if(date>=start)return true;end=new Date(y+1,em-1,ed,23,59,59,999);}
+    return date>=start&&date<=end;
+  }
+  function isInBufferRange(date,target,before,after){const diff=(date-target)/86400000;return diff>=-before&&diff<=after;}
+  function isSelectionSunday(d){return d.getMonth()===2&&d.getDay()===0&&d.getDate()>=11&&d.getDate()<=17;}
+  function isEaster(d,b=0,a=0){const Y=d.getFullYear();const a1=Y%19;const b1=Math.floor(Y/100);const c=Y%100;const d1=Math.floor(b1/4);const e=b1%4;const f=Math.floor((b1+8)/25);const g=Math.floor((b1-f+1)/3);const h=(19*a1+b1-d1-g+15)%30;const i=Math.floor(c/4);const k=c%4;const l=(32+2*e+2*i-h-k)%7;const m=Math.floor((a1+11*h+22*l)/451);const month=Math.floor((h+l-7*m+114)/31);const day=((h+l-7*m+114)%31)+1;const easter=new Date(Y,month-1,day);return isInBufferRange(d,easter,b,a);}
+  function getNthWeekdayOfMonth(y,m,w,n){let c=0;for(let d=1;d<=31;d++){const dt=new Date(y,m-1,d);if(dt.getMonth()+1!==m)break;if(dt.getDay()===w){c++;if(c===n)return dt;}}return null;}
+  function getHolidayEmoji(date=new Date()){
+    const now=new Date(date.getTime()),y=now.getFullYear();
+    for(const h of HOLIDAY_RANGES){
+      if(h.name==='marchmadness'){if(isSelectionSunday(now))return h.emoji;continue;}
+      if(h.name==='easter'){if(isEaster(now,h.bufferBefore,h.bufferAfter))return h.emoji;continue;}
+      if(h.nthWeekday){
+        const {month,weekday,nth}=h.nthWeekday;
+        const tgt=getNthWeekdayOfMonth(y,month,weekday,nth);
+        if(tgt && isInBufferRange(now,tgt,h.bufferBefore||0,h.bufferAfter||0))return h.emoji;
+        continue;
+      }
+      if(h.start && h.end && dateInRange(now,h.start,h.end))return h.emoji;
+    }
+    return MONTHLY_FALLBACKS[now.getMonth()];
+  }
+  return {HOLIDAY_RANGES,MONTHLY_FALLBACKS,getHolidayEmoji};
+});
+
+/* --- Map holidays → accent themes --- */
+const HOLIDAY_ACCENTS={
+  newyear:'goldenrod',mlkday:'brown',valentine:'pink',superbowl:'forest',
+  leapday:'sage',piday:'salmon',stpatricks:'sage',marchmadness:'orange',
+  springequinox:'olive',aprilfools:'purple',easter:'cyan',earthday:'forest',
+  cincodemayo:'red',juneteenth:'black',summersolstice:'amber',utahindependence:'sand',
+  perseids:'blue',laborday:'bronze',fallequinox:'salmon',halloween:'orange',
+  thanksgivingUS:'brown',wintersolstice:'ivory',holidays:'forest',christmaseve:'red',
+  christmas:'red',afterxmas:'black',newyearseve:'gray'
+};
+const MONTH_ACCENTS=['white','gray','teal','pink','sage','forest','berry','orange','goldenrod','red','bronze','black'];
+
+function getHolidayAccent(date=new Date()){
+  const emoji=HolidaySchedule.getHolidayEmoji(date);
+  for(const h of HolidaySchedule.HOLIDAY_RANGES){if(h.emoji===emoji)return HOLIDAY_ACCENTS[h.name];}
+  return MONTH_ACCENTS[date.getMonth()];
+}
+
+/* --- Pre-paint theme application --- */
+(function(){
+  try{
+    const prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedMode=localStorage.getItem('theme-mode')||'system';
+    const mode=savedMode==='system'?(prefersDark?'dark':'light'):savedMode;
+    const savedAccent=localStorage.getItem('theme-accent')||'holiday';
+    const accent=savedAccent==='holiday'?getHolidayAccent(new Date()):savedAccent;
+
+    const root=document.documentElement;
+    root.classList.add(`accent-${accent}`);
+    root.classList.add(mode);
+  }catch(e){console.error('Theme preload failed',e);}
+})();
+</script>
   <script src="/static/js/theme-init.js"></script>
   <script src="/static/js/holiday-shared.js"></script>
   <script src="/static/js/holiday-init.js"></script>
