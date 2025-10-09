@@ -208,11 +208,9 @@ const MONTH_ACCENTS = [
 ];
 
 function getHolidayAccent(date = new Date()) {
-  const emoji = getHolidayEmoji(date);     // use your existing detector
-  // Find holiday entry first
-  for (const h of HOLIDAY_RANGES) {
+  const emoji = HolidaySchedule.getHolidayEmoji(date); // ✅
+  for (const h of HolidaySchedule.HOLIDAY_RANGES) {
     if (h.emoji === emoji) return HOLIDAY_ACCENTS[h.name];
   }
-  // Otherwise, pick by month fallback
   return MONTH_ACCENTS[date.getMonth()];
 }
