@@ -1085,3 +1085,16 @@ footer a {
 #accent-list .accent-choice.selected {
   transform: scale(0.8);
 }
+
+/* Fix bad contrast accents */
+
+/* Black accent → lighten it in dark mode */
+.dark.accent-black {
+  --accent-text: color-mix(in srgb, white 85%, black 15%);
+}
+
+/* White / Ivory accent → darken it in light mode */
+.light.accent-white,
+.light.accent-ivory {
+  --accent-text: color-mix(in srgb, black 80%, var(--accent) 20%);
+}
