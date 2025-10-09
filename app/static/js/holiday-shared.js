@@ -53,7 +53,6 @@
       if (date >= start) return true;
       end = new Date(year + 1, em - 1, ed, 23, 59, 59, 999);
     }
-
     return date >= start && date <= end;
   }
 
@@ -145,11 +144,58 @@
     return MONTHLY_FALLBACKS[now.getMonth()];
   }
 
+  // === Namespaced accent mappings ===
+  const HOLIDAY_ACCENTS = {
+    newyear:        'goldenrod',
+    mlkday:         'brown',
+    valentine:      'pink',
+    superbowl:      'forest',
+    leapday:        'sage',
+    piday:          'salmon',
+    stpatricks:     'sage',
+    marchmadness:   'orange',
+    springequinox:  'olive',
+    aprilfools:     'purple',
+    easter:         'cyan',
+    earthday:       'forest',
+    cincodemayo:    'red',
+    juneteenth:     'black',
+    summersolstice: 'amber',
+    utahindependence:'sand',
+    perseids:       'blue',
+    laborday:       'bronze',
+    fallequinox:    'salmon',
+    halloween:      'orange',
+    thanksgivingUS: 'brown',
+    wintersolstice: 'ivory',
+    holidays:       'forest',
+    christmaseve:   'red',
+    christmas:      'red',
+    afterxmas:      'black',
+    newyearseve:    'gray',
+  };
+
+  const MONTH_ACCENTS = [
+    'white', 'gray', 'teal', 'pink', 'sage', 'forest',
+    'berry', 'orange', 'goldenrod', 'red', 'bronze', 'black'
+  ];
+
+  function getHolidayAccent(date = new Date()) {
+    const emoji = getHolidayEmoji(date);
+    for (const h of HOLIDAY_RANGES) {
+      if (h.emoji === emoji) return HOLIDAY_ACCENTS[h.name];
+    }
+    return MONTH_ACCENTS[date.getMonth()];
+  }
+
+  // === Export ===
   return {
     HOLIDAY_RANGES,
     MONTHLY_FALLBACKS,
+    HOLIDAY_ACCENTS,
+    MONTH_ACCENTS,
     getHolidayEmoji,
-    // expose helpers for future refinements/testing
+    getHolidayAccent,
     utils: {
       dateInRange,
       isEaster,
@@ -159,69 +205,3 @@
     },
   };
 });
-
-// 🎨 Map holidays (or month fallbacks) → closest accent theme
-const HOLIDAY_ACCENTS = {
-  newyear:        'goldenrod',   // 🎊
-  mlkday:         'brown',      // 📜
-  valentine:      'pink',        // 💌
-  superbowl:      'forest',       // 🏈
-  leapday:        'sage',        // 🐸
-  piday:          'salmon',        // 🥧
-  stpatricks:     'sage',      // ☘️
-  marchmadness:   'orange',      // 🏀
-  springequinox:  'olive',        // 🌅
-  aprilfools:     'purple',      // 🎭
-  easter:         'cyan',       // 🐇
-  earthday:       'forest',      // 🌍
-  cincodemayo:    'red',         // 🎺
-  juneteenth:     'black',         // ✊🏿
-  summersolstice: 'amber',       // ☀️
-  utahindependence:'sand',       // 🎆
-  perseids:       'blue',        // 🌠
-  laborday:       'bronze',      // 💪
-  fallequinox:    'salmon',        // 🌇
-  halloween:      'orange',      // 🎃
-  thanksgivingUS: 'brown',       // 🦃
-  wintersolstice: 'ivory',        // ❄️
-  holidays:       'forest',      // 🎄
-  christmaseve:   'red',         // 🎅
-  christmas:      'red',         // 🎁
-  afterxmas:      'black',      // 🪾
-  newyearseve:    'gray',   // 🪩
-};
-
-// Month fallbacks (for when no holiday active)
-const MONTH_ACCENTS = [
-  'white',       // Jan 🗻
-  'gray',        // Feb 🌨️
-  'teal',        // Mar 🍃
-  'pink',        // Apr 🌷
-  'sage',        // May 🐝
-  'forest',       // Jun 🌳
-  'berry',       // Jul 🌞
-  'orange',        // Aug 🌻
-  'goldenrod',       // Sep 🪵
-  'red',      // Oct 🍂
-  'bronze',      // Nov 🍠
-  'black',      // Dec 🌲
-];
-
-function getHolidayAccent(date = new Date()) {
-  const emoji = HolidaySchedule.getHolidayEmoji(date);
-  for (const h of HolidaySchedule.HOLIDAY_RANGES) {
-    if (h.emoji === emoji) return HOLIDAY_ACCENTS[h.name];
-  }
-  return MONTH_ACCENTS[date.getMonth()];
-}
-
-
-// Only export what is needed (if using modules)
-if (typeof module === 'object' && module.exports) {
-  module.exports = {
-    HolidaySchedule,
-    HOLIDAY_ACCENTS,
-    MONTH_ACCENTS,
-    getHolidayAccent,
-  };
-}
