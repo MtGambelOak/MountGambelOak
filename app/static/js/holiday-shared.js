@@ -215,12 +215,6 @@ function getHolidayAccent(date = new Date()) {
   return MONTH_ACCENTS[date.getMonth()];
 }
 
-function getAccentForToday() {
-  return getHolidayAccent(new Date());
-}
-
-// Optionally, expose to global for inline script
-window.__getAccentForToday = getAccentForToday;
 
 // Only export what is needed (if using modules)
 if (typeof module === 'object' && module.exports) {
