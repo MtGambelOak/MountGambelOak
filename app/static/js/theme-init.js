@@ -7,7 +7,7 @@
 
   try {
     let storedMode   = localStorage.getItem('theme-mode') || 'system';
-    const storedAccent = localStorage.getItem('theme-accent') || 'sage';
+    const storedAccent = localStorage.getItem('theme-accent') || 'holiday';
 
     const actualMode = storedMode === 'system' ? resolveSystemMode() : storedMode;
 
