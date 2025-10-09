@@ -48,20 +48,77 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('theme-config-btn');
   const closeBtn = document.getElementById('theme-config-close');
   const modeRadios = document.querySelectorAll('input[name="mode"]');
-  const accentButtons = document.querySelectorAll('.accent-choice');
+  const accentContainer = document.getElementById('accent-list');
   const root = document.documentElement;
   const themedIcons = document.querySelectorAll('.icon-image');
   const themeUtils = window.__themeUtils || {};
+  // resolve system default
+  function resolveSystemMode() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
 
-  const savedMode = localStorage.getItem('theme-mode') || 'dark';
+  const savedMode = localStorage.getItem('theme-mode') || 'system';
   const savedAccent = localStorage.getItem('theme-accent') || 'sage';
 
+  // ---- Load accents JSON and build buttons ----
+const accents = {
+  red:       { color: '#B22222' },
+  salmon:    { color: '#FA8072' },
+  orange:    { color: '#D2691E' },
+  amber:     { color: '#FFBF00' },
+  goldenrod: { color: '#DAA520' },
+  sand:      { color: '#C2B280' },
+  olive:     { color: '#808000' },
+  sage:      { color: '#5A7A39' },
+  forest:    { color: '#1E5631' },
+  teal:      { color: '#008080' },
+  cyan:      { color: '#40E0D0' },
+  blue:      { color: '#1E4D8F' },
+  berry:     { color: '#9F5F9F' },
+  purple:    { color: '#6A0DAD' },
+  pink:      { color: '#FF69B4' },
+  brown:     { color: '#964B00' },
+  bronze:    { color: '#CD7F32' },
+  gray:      { color: '#808080' },
+  black:     { color: '#000000', mixDark: 'white' },
+  ivory:     { color: '#F5F5DC' },
+  white:     { color: '#FFFFFF' }
+};
+
+
+  // Build accent buttons
+  for (const [name, def] of Object.entries(accents)) {
+    const btnEl = document.createElement('button');
+    btnEl.className = 'accent-choice';
+    btnEl.dataset.accent = name;
+    btnEl.style.background = def.color;
+    btnEl.title = name[0].toUpperCase() + name.slice(1);
+    accentContainer.appendChild(btnEl);
+  }
+
+  const accentButtons = accentContainer.querySelectorAll('.accent-choice');
+
+    (function injectAccentCSS() {
+    const style = document.createElement('style');
+    let css = '';
+    for (const [name, def] of Object.entries(accents)) {
+      css += `.accent-${name} { --accent: ${def.color};`;
+      if (def.mixDark) css += ` --mix-dark: ${def.mixDark};`;
+      if (def.mixLight) css += ` --mix-light: ${def.mixLight};`;
+      css += `}\n`;
+    }
+    style.textContent = css;
+    document.head.appendChild(style);
+  })();
+
   // icon swap
-  function updateIconsForMode(mode) {
+  function updateIconsForAccent(accent) {
     themedIcons.forEach(img => {
       const lightSrc = img.dataset.iconLight;
       const darkSrc = img.dataset.iconDark;
-      const targetSrc = mode === 'light' ? (lightSrc || darkSrc) : (darkSrc || lightSrc);
+      const targetSrc = (accent === 'white' || accent === 'ivory')
+        ? (lightSrc || darkSrc)
+        : (darkSrc || lightSrc);
       if (targetSrc && img.getAttribute('src') !== targetSrc) {
         img.setAttribute('src', targetSrc);
       }
@@ -70,20 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // apply theme to site
   function applyTheme(accent, mode) {
-    root.classList.remove(
-      'accent-berry', 'accent-black', 'accent-brown',
-      'accent-goldenrod', 'accent-gray', 'accent-green', 'accent-orange',
-      'accent-purple', 'accent-red', 'accent-sage', 'accent-salmon',
-      'accent-white', 'light', 'dark'
-    );
+    const actualMode = (mode === 'system') ? resolveSystemMode() : mode; 
+    root.className = '';
+    root.classList.add(`accent-${accent}`);
+    root.classList.add(actualMode);
 
-    if (accent) root.classList.add(`accent-${accent}`);
-    if (mode) root.classList.add(mode);
-
-    updateIconsForMode(mode);
+    updateIconsForAccent(accent);
 
     if (typeof themeUtils.updateAccentTextColor === 'function') {
-      themeUtils.updateAccentTextColor(mode);
+      themeUtils.updateAccentTextColor(actualMode);
     } else {
       root.style.removeProperty('--accent-text');
     }
@@ -91,17 +143,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- apply theme on load and mount giscus
   applyTheme(savedAccent, savedMode);
-  mountGiscusWithTheme(savedMode);
+  mountGiscusWithTheme(savedMode === 'system' ? resolveSystemMode() : savedMode);
 
   // restore radio state
   modeRadios.forEach(radio => {
     radio.checked = radio.value === savedMode;
   });
 
-  // accent highlight
   function highlightAccent(accent) {
     accentButtons.forEach(btn => {
-      btn.style.outline = btn.dataset.accent === accent ? '2px solid #000' : 'none';
+      btn.classList.toggle('selected', btn.dataset.accent === accent);
     });
   }
   highlightAccent(savedAccent);
@@ -120,9 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => popup.classList.add('hidden'));
-  }
+  if (closeBtn) closeBtn.addEventListener('click', () => popup.classList.add('hidden'));
 
   // mode change
   modeRadios.forEach(radio => {
@@ -131,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const accent = localStorage.getItem('theme-accent') || 'sage';
       applyTheme(accent, mode);
       localStorage.setItem('theme-mode', mode);
-      setGiscusTheme(mode); // live switch
+      setGiscusTheme(mode === 'system' ? resolveSystemMode() : mode);
     });
   });
 

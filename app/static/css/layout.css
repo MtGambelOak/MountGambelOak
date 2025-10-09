@@ -46,9 +46,13 @@
 }
 
 .site-header nav a {
-  color: var(--btn-text);
+  color: var(--header-text);
   text-decoration: none;
   font-weight: 600;
+}
+
+.site-header nav a:hover {
+  color: var(--nav-link-hover);
 }
 
 .site-header nav a.active {
@@ -1035,4 +1039,49 @@ footer a {
 
 .icon-btn:hover .icon-image {
   transform: scale(1.08);
+}
+
+/* === Theme widget grid === */
+#accent-list.accent-choice-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(2rem, 1fr));
+  gap: 0.5rem;
+  justify-items: center;
+}
+
+/* On wider screens, lock it to 7 per row */
+@media (min-width: 400px) {
+  #accent-list.accent-choice-container {
+    grid-template-columns: repeat(7, 2rem);
+  }
+}
+
+/* Highlight black only in dark mode */
+.dark #accent-list .accent-choice[data-accent="black"] {
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.6);
+  border-radius: 50%;
+}
+
+/* Highlight white and ivory only in light mode */
+.light #accent-list .accent-choice[data-accent="white"],
+.light #accent-list .accent-choice[data-accent="ivory"] {
+  box-shadow: 0 0 0 2px rgba(128, 128, 128, 0.6);
+  border-radius: 50%;
+}
+
+/* Base style */
+#accent-list .accent-choice {
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* Hover: shrink a little */
+#accent-list .accent-choice:hover {
+  transform: scale(0.9);
+}
+
+/* Selected: shrink a bit more so it looks pressed/active */
+#accent-list .accent-choice.selected {
+  transform: scale(0.8);
 }

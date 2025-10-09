@@ -159,3 +159,60 @@
     },
   };
 });
+
+// 🎨 Map holidays (or month fallbacks) → closest accent theme
+const HOLIDAY_ACCENTS = {
+  newyear:        'goldenrod',   // 🎊
+  mlkday:         'brown',      // 📜
+  valentine:      'pink',        // 💌
+  superbowl:      'forest',       // 🏈
+  leapday:        'sage',        // 🐸
+  piday:          'salmon',        // 🥧
+  stpatricks:     'sage',      // ☘️
+  marchmadness:   'orange',      // 🏀
+  springequinox:  'olive',        // 🌅
+  aprilfools:     'purple',      // 🎭
+  easter:         'cyan',       // 🐇
+  earthday:       'forest',      // 🌍
+  cincodemayo:    'red',         // 🎺
+  juneteenth:     'black',         // ✊🏿
+  summersolstice: 'amber',       // ☀️
+  utahindependence:'sand',       // 🎆
+  perseids:       'blue',        // 🌠
+  laborday:       'bronze',      // 💪
+  fallequinox:    'salmon',        // 🌇
+  halloween:      'orange',      // 🎃
+  thanksgivingUS: 'brown',       // 🦃
+  wintersolstice: 'ivory',        // ❄️
+  holidays:       'forest',      // 🎄
+  christmaseve:   'red',         // 🎅
+  christmas:      'red',         // 🎁
+  afterxmas:      'black',      // 🪾
+  newyearseve:    'gray',   // 🪩
+};
+
+// Month fallbacks (for when no holiday active)
+const MONTH_ACCENTS = [
+  'white',       // Jan 🗻
+  'gray',        // Feb 🌨️
+  'teal',        // Mar 🍃
+  'pink',        // Apr 🌷
+  'sage',        // May 🐝
+  'forest',       // Jun 🌳
+  'berry',       // Jul 🌞
+  'orange',        // Aug 🌻
+  'goldenrod',       // Sep 🪵
+  'red',      // Oct 🍂
+  'bronze',      // Nov 🍠
+  'black',      // Dec 🌲
+];
+
+function getHolidayAccent(date = new Date()) {
+  const emoji = getHolidayEmoji(date);     // use your existing detector
+  // Find holiday entry first
+  for (const h of HOLIDAY_RANGES) {
+    if (h.emoji === emoji) return HOLIDAY_ACCENTS[h.name];
+  }
+  // Otherwise, pick by month fallback
+  return MONTH_ACCENTS[date.getMonth()];
+}
