@@ -208,9 +208,26 @@ const MONTH_ACCENTS = [
 ];
 
 function getHolidayAccent(date = new Date()) {
-  const emoji = HolidaySchedule.getHolidayEmoji(date); // ✅
+  const emoji = HolidaySchedule.getHolidayEmoji(date);
   for (const h of HolidaySchedule.HOLIDAY_RANGES) {
     if (h.emoji === emoji) return HOLIDAY_ACCENTS[h.name];
   }
   return MONTH_ACCENTS[date.getMonth()];
+}
+
+function getAccentForToday() {
+  return getHolidayAccent(new Date());
+}
+
+// Optionally, expose to global for inline script
+window.__getAccentForToday = getAccentForToday;
+
+// Only export what is needed (if using modules)
+if (typeof module === 'object' && module.exports) {
+  module.exports = {
+    HolidaySchedule,
+    HOLIDAY_ACCENTS,
+    MONTH_ACCENTS,
+    getHolidayAccent,
+  };
 }
