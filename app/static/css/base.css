@@ -41,6 +41,11 @@ main p {
   line-height: 1.6;
 }
 
+/* Shared typography helpers */
+article p + p {
+  margin-top: 0.85rem;
+}
+
 .btn {
   background: var(--btn-bg);
   color: var(--btn-text);

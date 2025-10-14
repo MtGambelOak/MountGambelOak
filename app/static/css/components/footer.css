@@ -1,10 +1,29 @@
+/* Site footer */
+footer {
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+  margin-top: 3rem;
+}
+
+footer a {
+  color: var(--footer-link);
+  text-decoration: underline;
+}
+
+.footer-links {
+  margin-top: 0.8rem;
+}
+
 .footer-with-holiday {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1rem;
   text-align: center;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .footer-text {
@@ -49,4 +68,24 @@
 .holiday-emoji-link:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.5rem;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.icon-image {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.icon-btn:hover .icon-image {
+  transform: scale(1.08);
 }
