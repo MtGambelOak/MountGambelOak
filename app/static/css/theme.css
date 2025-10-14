@@ -17,6 +17,7 @@
   --footer-bg: var(--accent);
   --footer-link: var(--header-text);
   --footer-text: var(--header-text);
+  --accent-text: var(--accent);
 }
 
 /* Mode variants */
@@ -26,7 +27,6 @@
   --main-bg: rgba(255,255,255,0.9);
   --main-text: #4a4a4a;
   --footer-bg-opacity: 0.5;
-  --accent-text: var(--accent);
 }
 
 .dark {
@@ -35,28 +35,6 @@
   --main-bg: #121212;
   --main-text: #eee;
   --footer-bg-opacity: 1;
-  --accent-text: var(--accent);
 }
 
-/* Each palette only defines the accent color */
-.accent-sage       { --accent: #5A7A39; }
-.accent-berry      { --accent: #9F5F9F; }
-.accent-black      { --accent: #000000; --mix-dark: white; }
-.accent-brown      { --accent: #964B00; }
-.accent-goldenrod  { --accent: #DAA520; }
-.accent-amber      { --accent: #FFBF00; }
-.accent-sand       { --accent: #C2B280; }
-.accent-olive      { --accent: #808000; }
-.accent-forest     { --accent: #1E5631; }
-.accent-teal       { --accent: #008080; }
-.accent-cyan       { --accent: #40E0D0; }
-.accent-blue       { --accent: #1E4D8F; }
-.accent-pink       { --accent: #FF69B4; }
-.accent-bronze     { --accent: #CD7F32; }
-.accent-ivory      { --accent: #F5F5DC; }
-.accent-gray       { --accent: #808080; }
-.accent-orange     { --accent: #D2691E; }
-.accent-purple     { --accent: #6A0DAD; }
-.accent-red        { --accent: #B22222; }
-.accent-salmon     { --accent: #FA8072; }
-.accent-white      { --accent: #FFFFFF; }
+/* Individual accent classes are injected at runtime by theme-init.js */

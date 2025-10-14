@@ -8,17 +8,21 @@
     accent: 'theme-accent',
     lastCustomAccent: 'last-custom-accent',
   };
+  const managedStorageKeys = new Set(Object.values(storageKeys));
 
   const accentPalette = config.accentPalette || {};
   const iconLightAccents = new Set(config.iconLightAccents || ['white', 'ivory']);
   const defaults = {
     mode: config.defaultMode || 'system',
     accent: config.defaultAccent || 'holiday',
-    lastCustomAccent: config.defaultAccent || 'forest',
+    lastCustomAccent:
+      config.defaultCustomAccent || config.defaultAccent || 'forest',
   };
 
   const subscribers = new Set();
   let hydrated = false;
+
+  ensureAccentPaletteStyles();
 
   const state = readPersistedState();
   preloadTheme(state);
@@ -44,6 +48,7 @@
   root.ThemeManager = ThemeManager;
 
   doc.addEventListener('DOMContentLoaded', ensureHydrated);
+  root.addEventListener('storage', handleStorageEvent);
 
   function getPalette() {
     return accentPalette;
@@ -216,6 +221,41 @@
 
     rootEl.classList.add(targetAccentClass);
     rootEl.classList.add(mode);
+  }
+
+  function ensureAccentPaletteStyles() {
+    const styleId = 'theme-accent-palette';
+    if (doc.getElementById(styleId)) return;
+    const entries = Object.entries(accentPalette);
+    if (!entries.length) return;
+
+    const style = doc.createElement('style');
+    style.id = styleId;
+    style.type = 'text/css';
+    let css = '';
+    entries.forEach(([name, def]) => {
+      if (!def || !def.color) return;
+      css += `.accent-${name} { --accent: ${def.color};`;
+      if (def.mixDark) css += ` --mix-dark: ${def.mixDark};`;
+      if (def.mixLight) css += ` --mix-light: ${def.mixLight};`;
+      css += ` }\n`;
+    });
+    style.textContent = css;
+    doc.head.appendChild(style);
+  }
+
+  function handleStorageEvent(event) {
+    if (!event.key || !managedStorageKeys.has(event.key)) return;
+    const nextState = readPersistedState();
+    const modeChanged = state.mode !== nextState.mode;
+    const accentChanged = state.accent !== nextState.accent;
+    const customChanged = state.lastCustomAccent !== nextState.lastCustomAccent;
+    if (!modeChanged && !accentChanged && !customChanged) return;
+
+    state.mode = nextState.mode;
+    state.accent = nextState.accent;
+    state.lastCustomAccent = nextState.lastCustomAccent;
+    applyThemeForState();
   }
 
   function updateIconsForAccent(accent) {
