@@ -31,7 +31,7 @@
   border: 1px solid var(--border-color, #ccc);
   border-radius: 6px;
   padding: 1rem;
-  width: 280px;
+  width: min(340px, calc(100vw - 1.5rem));
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 10;
 }
@@ -82,7 +82,7 @@
 
 @media (min-width: 400px) {
   #accent-list.accent-choice-container {
-    grid-template-columns: repeat(7, 2rem);
+    grid-template-columns: repeat(7, minmax(2rem, 1fr));
   }
 }
 

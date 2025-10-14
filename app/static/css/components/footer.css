@@ -14,20 +14,33 @@ footer a {
 }
 
 .footer-links {
-  margin-top: 0.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
 }
 
 .footer-with-holiday {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.footer-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .footer-text {
   display: inline-block;
+  margin: 0 0.5rem;
+  max-width: 100%;
 }
 
 .footer-text a {
@@ -74,7 +87,6 @@ footer a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 0.5rem;
   text-decoration: none;
   transition: transform 0.2s ease;
 }
@@ -88,4 +100,22 @@ footer a {
 
 .icon-btn:hover .icon-image {
   transform: scale(1.08);
+}
+
+@media (min-width: 640px) {
+  .footer-with-holiday {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .footer-cluster {
+    justify-content: center;
+    order: 1;
+  }
+
+  .footer-text {
+    order: 0;
+  }
 }

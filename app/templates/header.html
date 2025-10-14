@@ -1,57 +1,71 @@
 <header class="site-header">
-  <h1>GambelDev</h1>
-
-  <nav>
-    <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
-    <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
-    <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
-    <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
-  </nav>
-
-  <div class="theme-wrapper">
-    <button id="theme-config-btn" aria-label="Open theme settings">
-      Theme
+  <div class="site-header-brand">
+    <h1>GambelDev</h1>
+    <button
+      class="site-nav-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-header-panel"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="site-nav-toggle-icon" aria-hidden="true"></span>
+      <span class="site-nav-toggle-label">Menu</span>
     </button>
+  </div>
 
-    <div id="theme-config-popup" class="hidden" role="dialog" aria-modal="true" aria-labelledby="theme-config-title">
-      <h3 id="theme-config-title">Theme</h3>
+  <div class="site-header-panel" id="site-header-panel">
+    <nav>
+      <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
+      <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
+      <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
+      <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
+    </nav>
 
-      <!-- Mode toggle -->
-      <div>
-        <label>
-          <input type="radio" name="mode" value="light" />
-          <span>Light</span>
-        </label>
-        <label>
-          <input type="radio" name="mode" value="dark" />
-          <span>Dark</span>
-        </label>
-        <label>
-          <input type="radio" name="mode" value="system" />
-          <span>System</span>
-        </label>
-      </div>
+    <div class="theme-wrapper">
+      <button id="theme-config-btn" aria-label="Open theme settings">
+        Theme
+      </button>
 
-      <!-- Accent colors -->
-      <div>
-        <p>Accent Color:</p>
-        <!-- ✅ NEW wrapper for grid layout -->
+      <div id="theme-config-popup" class="hidden" role="dialog" aria-modal="true" aria-labelledby="theme-config-title">
+        <h3 id="theme-config-title">Theme</h3>
+
+        <!-- Mode toggle -->
         <div>
-        <label>
-          <input type="radio" name="accent-mode" value="custom" checked />
-          <span>Choose Color</span>
-        </label>  
-        <label>
-          <input type="radio" name="accent-mode" value="holiday" />
-          <span>Holiday</span>
-        </label>
-      </div>
-        <div id="accent-list" class="accent-choice-container">
-          <!-- Buttons inserted dynamically via JS -->
+          <label>
+            <input type="radio" name="mode" value="light" />
+            <span>Light</span>
+          </label>
+          <label>
+            <input type="radio" name="mode" value="dark" />
+            <span>Dark</span>
+          </label>
+          <label>
+            <input type="radio" name="mode" value="system" />
+            <span>System</span>
+          </label>
         </div>
-      </div>
 
-      <button id="theme-config-close">Close</button>
+        <!-- Accent colors -->
+        <div>
+          <p>Accent Color:</p>
+          <!-- ✅ NEW wrapper for grid layout -->
+          <div>
+          <label>
+            <input type="radio" name="accent-mode" value="custom" checked />
+            <span>Choose Color</span>
+          </label>  
+          <label>
+            <input type="radio" name="accent-mode" value="holiday" />
+            <span>Holiday</span>
+          </label>
+        </div>
+          <div id="accent-list" class="accent-choice-container">
+            <!-- Buttons inserted dynamically via JS -->
+          </div>
+        </div>
+
+        <button id="theme-config-close">Close</button>
+      </div>
     </div>
   </div>
 </header>
