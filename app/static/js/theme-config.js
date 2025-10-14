@@ -38,7 +38,7 @@
     accentPalette,
     defaultMode: 'system',
     defaultAccent: 'holiday',
-    defaultCustomAccent: 'forest',
+    defaultCustomAccent: 'sage',
     iconLightAccents,
   });
 
