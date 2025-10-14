@@ -37,4 +37,29 @@
   --footer-bg-opacity: 1;
 }
 
-/* Individual accent classes are injected at runtime by theme-init.js */
+/* Individual accent classes */
+.accent-forest { --accent: #1E5631; }
+.accent-sage { --accent: #5A7A39; }
+.accent-olive { --accent: #808000; }
+.accent-sand { --accent: #C2B280; }
+.accent-goldenrod { --accent: #DAA520; }
+.accent-amber { --accent: #FFBF00; }
+.accent-orange { --accent: #D2691E; }
+.accent-salmon { --accent: #FA8072; }
+.accent-red { --accent: #B22222; }
+.accent-pink { --accent: #FF69B4; }
+.accent-berry { --accent: #9F5F9F; }
+.accent-purple { --accent: #6A0DAD; }
+.accent-bronze { --accent: #CD7F32; }
+.accent-brown { --accent: #964B00; }
+.accent-teal { --accent: #008080; }
+.accent-cyan { --accent: #40E0D0; }
+.accent-blue { --accent: #1E4D8F; }
+.accent-gray { --accent: #808080; }
+.accent-black { --accent: #000000; --mix-dark: white; }
+.accent-ivory { --accent: #F5F5DC; }
+.accent-white { --accent: #FFFFFF; }
+
+.dark.accent-black { --accent-text: color-mix(in srgb, white 85%, black 15%); }
+.light.accent-white { --accent-text: color-mix(in srgb, black 80%, var(--accent) 20%); }
+.light.accent-ivory { --accent-text: color-mix(in srgb, black 80%, var(--accent) 20%); }
