@@ -28,8 +28,18 @@
       </a>
     </div>
 
-    <a href="/holiday-trivia" class="holiday-emoji-link" aria-label="Open holiday trivia">
-      <div id="holiday-footer-image" class="holiday-image"></div>
+    {% set holiday = holiday_details %}
+    <a
+      href="/holiday-trivia"
+      class="holiday-emoji-link"
+      aria-label="Holiday trivia: {{ holiday.title }}"
+    >
+      <div
+        id="holiday-footer-image"
+        class="holiday-image"
+        title="{{ holiday.title }}"
+        aria-hidden="true"
+      >{{ holiday.emoji }}</div>
     </a>
   </div>
 

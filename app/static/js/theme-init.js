@@ -12,6 +12,11 @@
 
   const accentPalette = config.accentPalette || {};
   const iconLightAccents = new Set(config.iconLightAccents || ['white', 'ivory']);
+  function getHolidayDetails() {
+    const details = root.__HOLIDAY_DETAILS__;
+    if (details && typeof details === 'object') return details;
+    return null;
+  }
   const defaults = {
     mode: config.defaultMode || 'system',
     accent: config.defaultAccent || 'holiday',
@@ -21,8 +26,6 @@
 
   const subscribers = new Set();
   let hydrated = false;
-
-  ensureAccentPaletteStyles();
 
   const state = readPersistedState();
   preloadTheme(state);
@@ -145,6 +148,10 @@
 
   function resolveAccent(accent) {
     if (accent === 'holiday') {
+      const holidayDetails = getHolidayDetails();
+      if (holidayDetails && holidayDetails.accent) {
+        return holidayDetails.accent;
+      }
       if (root.HolidaySchedule && typeof root.HolidaySchedule.getHolidayAccent === 'function') {
         return root.HolidaySchedule.getHolidayAccent(new Date());
       }
@@ -178,6 +185,7 @@
     const actualMode = resolveActualMode(currentState.mode);
     const accent = resolveAccent(currentState.accent);
     setRootClasses(rootEl, accent, actualMode);
+    applyHolidayDetails(rootEl);
   }
 
   function ensureHydrated() {
@@ -203,6 +211,7 @@
     const accent = resolveAccent(state.accent);
 
     setRootClasses(rootEl, accent, actualMode);
+    applyHolidayDetails(rootEl);
     updateIconsForAccent(accent);
     updateAccentTextColor(actualMode);
     setGiscusTheme(actualMode);
@@ -223,25 +232,16 @@
     rootEl.classList.add(mode);
   }
 
-  function ensureAccentPaletteStyles() {
-    const styleId = 'theme-accent-palette';
-    if (doc.getElementById(styleId)) return;
-    const entries = Object.entries(accentPalette);
-    if (!entries.length) return;
-
-    const style = doc.createElement('style');
-    style.id = styleId;
-    style.type = 'text/css';
-    let css = '';
-    entries.forEach(([name, def]) => {
-      if (!def || !def.color) return;
-      css += `.accent-${name} { --accent: ${def.color};`;
-      if (def.mixDark) css += ` --mix-dark: ${def.mixDark};`;
-      if (def.mixLight) css += ` --mix-light: ${def.mixLight};`;
-      css += ` }\n`;
-    });
-    style.textContent = css;
-    doc.head.appendChild(style);
+  function applyHolidayDetails(rootEl) {
+    if (!rootEl) return;
+    const details = getHolidayDetails();
+    if (details && details.emoji) {
+      rootEl.style.setProperty('--holiday-emoji', `"${details.emoji}"`);
+    } else {
+      rootEl.style.removeProperty('--holiday-emoji');
+    }
+    rootEl.dataset.holidayEmoji = details && details.emoji ? details.emoji : '';
+    rootEl.dataset.holidayAccent = details && details.accent ? details.accent : '';
   }
 
   function handleStorageEvent(event) {

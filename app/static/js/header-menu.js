@@ -88,10 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const scheduleLayoutEvaluation = () => {
+    if (header.__layoutFrame) return;
+    header.__layoutFrame = window.requestAnimationFrame(() => {
+      header.__layoutFrame = null;
+      evaluateLayout();
+    });
+  };
+
   evaluateLayout();
 
-  const ro = new ResizeObserver(() => evaluateLayout());
+  const ro = new ResizeObserver(() => scheduleLayoutEvaluation());
   ro.observe(header);
   ro.observe(panel);
-  window.addEventListener('resize', evaluateLayout);
+  window.addEventListener('resize', scheduleLayoutEvaluation);
 });

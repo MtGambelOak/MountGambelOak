@@ -91,10 +91,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `app/static/js/favicon-version.js` - Appends a date query to bust favicon cache daily.
 - `app/static/js/blog-tags.js` - Enables filtering blog cards by tag and syncs the URL query.
 - `app/static/js/post-sections.js` - Builds the blog post outline indicator and scroll syncing.
-- `app/static/js/holiday-shared.js` - Determines the active holiday emoji and accent utilities.
-- `app/static/js/holiday-init.js` - Injects the seasonal emoji into CSS variables during load.
-- `app/static/js/holiday.js` - Updates the footer emoji display based on the current holiday.
-- `app/static/js/holiday-trivia.js` - Displays contextual holiday trivia in the footer widget.
+- `app/static/js/holiday-shared.js` - Determines the active holiday emoji, accent, and trivia metadata.
 - `app/static/js/icon-update.js` - Node script that regenerates the favicon SVG with the holiday emoji.
 
 ### Blog content
@@ -127,8 +124,9 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ### Holiday & seasonal flourishes
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
-- `holiday-init.js`, `holiday.js`, and `holiday-trivia.js` react to that schedule to refresh the favicon, footer emoji, and trivia section.
-- The GitHub Action runs nightly to regenerate the favicon automatically; a cron job runs on the host machine to update the favicon for local development to keep it in sync with production.
+- `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
+- `scripts/generate-theme-css.js` turns the accent palette into `static/css/generated/theme-accents.css`; `build.py` runs it automatically before copying assets.
+- The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
 
 ---
 

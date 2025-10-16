@@ -1,4 +1,10 @@
-(function (root) {
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory();
+  } else {
+    root.ThemeConfig = factory();
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   const storageKeys = Object.freeze({
     mode: 'theme-mode',
     accent: 'theme-accent',
@@ -42,5 +48,5 @@
     iconLightAccents,
   });
 
-  root.ThemeConfig = ThemeConfig;
-})(typeof window !== 'undefined' ? window : globalThis);
+  return ThemeConfig;
+});

@@ -21,12 +21,13 @@
       <a class="btn" href="/">Return Home</a>
     </div>
 
-    <div class="holiday-trivia" id="holiday-trivia" data-ready="false" aria-live="polite">
+    {% set holiday = holiday_details %}
+    <div class="holiday-trivia" id="holiday-trivia" data-ready="true" aria-live="polite">
       <h2 class="holiday-trivia-heading">
-        <span data-holiday-emoji role="img" aria-label="Seasonal emoji">🗓️</span>
-        <span data-holiday-name>Seasonal Snapshot</span>
+        <span role="img" aria-label="Seasonal emoji">{{ holiday.emoji }}</span>
+        <span>{{ holiday.title }}</span>
       </h2>
-      <p class="holiday-trivia-fact" data-holiday-fact>Loading today’s fact…</p>
+      <p class="holiday-trivia-fact">{{ holiday.fact }}</p>
     </div>
 
   </main>
@@ -34,6 +35,5 @@
   {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
-  <script src="/static/js/holiday-trivia.js"></script>
 </body>
 </html>

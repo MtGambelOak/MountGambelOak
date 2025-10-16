@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import subprocess
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 import markdown
@@ -10,6 +11,8 @@ TEMPLATES = os.path.join(SRC_DIR, "templates")
 STATIC = os.path.join(SRC_DIR, "static")
 DIST = "dist"
 BLOG_POSTS_FILE = os.path.join(SRC_DIR, "blog", "blog_posts.json")
+HOLIDAY_DETAILS_FILE = os.path.join(STATIC, "data", "holiday-details.json")
+THEME_CSS_SCRIPT = Path("scripts") / "generate-theme-css.js"
 WORDS_PER_MINUTE = 200
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
@@ -42,6 +45,46 @@ if os.path.exists(BLOG_POSTS_FILE):
             BLOG_POSTS.append(post)
         BLOG_POSTS.sort(key=lambda post: post.get("date", ""), reverse=True)
 
+# Holiday details
+DEFAULT_HOLIDAY_DETAILS = {
+    "generatedAt": None,
+    "name": None,
+    "emoji": "🗻",
+    "accent": "forest",
+    "title": "Seasonal Snapshot",
+    "fact": "Stay curious; the holiday cron will surprise you again tomorrow.",
+}
+
+
+def load_holiday_details():
+    if os.path.exists(HOLIDAY_DETAILS_FILE):
+        try:
+            with open(HOLIDAY_DETAILS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                merged = DEFAULT_HOLIDAY_DETAILS.copy()
+                merged.update({k: v for k, v in data.items() if v is not None})
+                return merged
+        except (json.JSONDecodeError, OSError):
+            pass
+    return DEFAULT_HOLIDAY_DETAILS.copy()
+
+
+HOLIDAY_DETAILS = load_holiday_details()
+
+# Generate accent CSS before copying assets
+def generate_theme_css():
+    script_path = THEME_CSS_SCRIPT
+    if not script_path.exists():
+        return
+    try:
+        subprocess.run(["node", str(script_path)], check=True)
+    except FileNotFoundError:
+        print("Warning: Node.js not found; skipping accent CSS generation.")
+    except subprocess.CalledProcessError as exc:
+        print(f"Warning: Failed to generate theme accent CSS ({exc}).")
+
+generate_theme_css()
+
 # Clean output dir
 if os.path.exists(DIST):
     shutil.rmtree(DIST)
@@ -52,6 +95,7 @@ shutil.copytree(STATIC, os.path.join(DIST, "static"))
 
 # Setup Jinja
 env = Environment(loader=FileSystemLoader(TEMPLATES))
+env.globals["holiday_details"] = HOLIDAY_DETAILS
 
 # Render each template
 # (template name, output path)

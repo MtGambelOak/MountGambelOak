@@ -203,8 +203,21 @@
 
   window.addEventListener('scroll', handleScroll, { passive: true });
   window.addEventListener('resize', handleResize);
-  window.addEventListener('orientationchange', handleResize);
-  window.addEventListener('load', handleResize);
+
+  if (typeof window.ResizeObserver === 'function') {
+    const resizeObserver = new ResizeObserver(() => {
+      requestUpdate(function () {
+        measureLayout();
+        updateOutlineState();
+      });
+    });
+
+    resizeObserver.observe(article);
+    resizeObserver.observe(outline);
+  } else {
+    window.addEventListener('orientationchange', handleResize);
+    window.addEventListener('load', handleResize);
+  }
 
   outline.addEventListener('click', function (event) {
     var link = event.target.closest('a[data-heading-id]');

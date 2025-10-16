@@ -7,6 +7,11 @@
 
   const filterButtons = filterBar.querySelectorAll('.tag-chip');
   const cardList = document.querySelector('.blog-card-list');
+  const cardTagMap = new Map();
+
+  postCards.forEach(card => {
+    cardTagMap.set(card, parseTags(card.dataset.tags));
+  });
 
   function activate(tag) {
     filterButtons.forEach(btn => {
@@ -20,7 +25,7 @@
         card.classList.remove('blog-card--hidden');
         return;
       }
-      const tags = parseTags(card.dataset.tags);
+      const tags = cardTagMap.get(card) || [];
       const shouldHide = !tags.includes(tag);
       card.hidden = shouldHide;
       card.classList.toggle('blog-card--hidden', shouldHide);
