@@ -88,5 +88,6 @@ A personal website. The project renders a static bundle with Jinja templates and
 
 ## Support scripts & notes
 - `build.py` is the single source of truth for derived blog metadata. Keep it updated if you introduce new fields shared between the blog index and individual posts.
+- A cron job runs on the host machine to update the favicon for local development to keep it in sync with production.
 
 ---
