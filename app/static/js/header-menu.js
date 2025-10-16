@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const evaluateLayout = () => {
+    const wasCollapsible = header.classList.contains('is-collapsible');
     const wasOpen = header.classList.contains('is-open');
 
     header.classList.remove('is-collapsible', 'is-open');
@@ -68,14 +69,25 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.hidden = true;
     toggle.setAttribute('aria-expanded', 'false');
 
-    // Force layout calculation before measuring
-    void header.offsetWidth;
-
     const brandRect = brand.getBoundingClientRect();
     const panelRect = panel.getBoundingClientRect();
     const panelWrapped = panelRect.top - brandRect.top > 1;
     const navOverflow = nav.scrollWidth - nav.clientWidth > 1;
     const shouldCollapse = panelWrapped || navOverflow;
+
+    if (wasCollapsible) {
+      header.classList.add('is-collapsible');
+      toggle.hidden = false;
+      toggle.setAttribute('aria-expanded', wasOpen ? 'true' : 'false');
+      panel.setAttribute('aria-hidden', wasOpen ? 'false' : 'true');
+      if (wasOpen) {
+        header.classList.add('is-open');
+      }
+    }
+
+    if (shouldCollapse === wasCollapsible) {
+      return;
+    }
 
     if (shouldCollapse) {
       header.classList.add('is-collapsible');
@@ -84,7 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
       toggle.setAttribute('aria-expanded', 'false');
       if (wasOpen) {
         openNav();
+      } else {
+        header.classList.remove('is-open');
       }
+    } else {
+      header.classList.remove('is-collapsible', 'is-open');
+      panel.removeAttribute('aria-hidden');
+      toggle.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
     }
   };
 

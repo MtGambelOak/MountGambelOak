@@ -26,9 +26,13 @@
 
   const subscribers = new Set();
   let hydrated = false;
+  let lastAppliedMode = null;
+  let lastAppliedAccent = null;
+  let lastHolidayEmoji = null;
+  let lastHolidayAccent = null;
+  let themedIconsCache = null;
 
   const state = readPersistedState();
-  preloadTheme(state);
 
   const ThemeManager = {
     getPalette,
@@ -78,6 +82,16 @@
   }
 
   function readPersistedState() {
+    const preloaded = root.__themePreloadState__;
+    if (preloaded && typeof preloaded === 'object') {
+      delete root.__themePreloadState__;
+      return {
+        mode: preloaded.mode || defaults.mode,
+        accent: preloaded.accent || defaults.accent,
+        lastCustomAccent: preloaded.lastCustomAccent || defaults.lastCustomAccent,
+      };
+    }
+
     const nextState = { ...defaults };
     try {
       const storedMode = root.localStorage && root.localStorage.getItem(storageKeys.mode);
@@ -152,10 +166,7 @@
       if (holidayDetails && holidayDetails.accent) {
         return holidayDetails.accent;
       }
-      if (root.HolidaySchedule && typeof root.HolidaySchedule.getHolidayAccent === 'function') {
-        return root.HolidaySchedule.getHolidayAccent(new Date());
-      }
-      return defaults.lastCustomAccent;
+      return state.lastCustomAccent || defaults.lastCustomAccent;
     }
     return accent || defaults.accent;
   }
@@ -178,20 +189,11 @@
     applyThemeForState();
   }
 
-  function preloadTheme(currentState) {
-    const rootEl = doc.documentElement;
-    if (!rootEl) return;
-
-    const actualMode = resolveActualMode(currentState.mode);
-    const accent = resolveAccent(currentState.accent);
-    setRootClasses(rootEl, accent, actualMode);
-    applyHolidayDetails(rootEl);
-  }
-
   function ensureHydrated() {
     if (hydrated) return;
     hydrated = true;
 
+    refreshThemedIcons();
     applyThemeForState();
     mountGiscusWithTheme(resolveActualMode(state.mode));
 
@@ -209,12 +211,37 @@
 
     const actualMode = resolveActualMode(state.mode);
     const accent = resolveAccent(state.accent);
+    const details = getHolidayDetails();
+    const holidayEmoji = details && details.emoji ? details.emoji : '';
+    const holidayAccent = details && details.accent ? details.accent : '';
 
-    setRootClasses(rootEl, accent, actualMode);
-    applyHolidayDetails(rootEl);
-    updateIconsForAccent(accent);
-    updateAccentTextColor(actualMode);
-    setGiscusTheme(actualMode);
+    const modeChanged = lastAppliedMode !== actualMode;
+    const accentChanged = lastAppliedAccent !== accent;
+    const holidayChanged =
+      lastHolidayEmoji !== holidayEmoji || lastHolidayAccent !== holidayAccent;
+
+    if (modeChanged || accentChanged) {
+      setRootClasses(rootEl, accent, actualMode);
+    }
+
+    if (holidayChanged) {
+      applyHolidayDetails(rootEl, details);
+    }
+
+    if (accentChanged) {
+      updateIconsForAccent(accent);
+    }
+
+    if (modeChanged) {
+      updateAccentTextColor(actualMode);
+      setGiscusTheme(actualMode);
+    }
+
+    lastAppliedMode = actualMode;
+    lastAppliedAccent = accent;
+    lastHolidayEmoji = holidayEmoji;
+    lastHolidayAccent = holidayAccent;
+
     notify();
   }
 
@@ -232,9 +259,9 @@
     rootEl.classList.add(mode);
   }
 
-  function applyHolidayDetails(rootEl) {
+  function applyHolidayDetails(rootEl, suppliedDetails) {
     if (!rootEl) return;
-    const details = getHolidayDetails();
+    const details = suppliedDetails || getHolidayDetails();
     if (details && details.emoji) {
       rootEl.style.setProperty('--holiday-emoji', `"${details.emoji}"`);
     } else {
@@ -258,8 +285,19 @@
     applyThemeForState();
   }
 
+  function getThemedIcons() {
+    if (!themedIconsCache) {
+      refreshThemedIcons();
+    }
+    return themedIconsCache;
+  }
+
+  function refreshThemedIcons() {
+    themedIconsCache = Array.from(doc.querySelectorAll('.icon-image'));
+  }
+
   function updateIconsForAccent(accent) {
-    const themedIcons = doc.querySelectorAll('.icon-image');
+    const themedIcons = getThemedIcons();
     themedIcons.forEach((img) => {
       const lightSrc = img.dataset.iconLight;
       const darkSrc = img.dataset.iconDark;

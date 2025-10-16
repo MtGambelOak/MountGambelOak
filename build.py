@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+from datetime import UTC, datetime
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 import markdown
@@ -70,6 +71,19 @@ def load_holiday_details():
 HOLIDAY_DETAILS = load_holiday_details()
 
 
+# Derived metadata for templates
+def resolve_favicon_version(details):
+    stamp = details.get("generatedAt")
+    if isinstance(stamp, str) and stamp:
+        date_part = stamp.split("T", 1)[0]
+        return date_part.replace("-", "")
+    return datetime.now(UTC).strftime("%Y%m%d")
+
+
+FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
+CURRENT_YEAR = datetime.now(UTC).year
+
+
 # Generate accent CSS before copying assets
 def generate_theme_css():
     script_path = THEME_CSS_SCRIPT
@@ -96,6 +110,8 @@ shutil.copytree(STATIC, os.path.join(DIST, "static"))
 # Setup Jinja
 env = Environment(loader=FileSystemLoader(TEMPLATES))
 env.globals["holiday_details"] = HOLIDAY_DETAILS
+env.globals["favicon_version"] = FAVICON_VERSION
+env.globals["current_year"] = CURRENT_YEAR
 
 # Render each template
 # (template name, output path)

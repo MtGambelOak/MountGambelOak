@@ -84,11 +84,10 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ### JavaScript
 - `app/static/js/theme-config.js` - Defines theme storage keys and available accent palette.
+- `app/static/js/theme-preload.js` - Applies stored theme preferences before styles load to avoid flashes.
 - `app/static/js/theme-init.js` - Loads stored theme preferences and exposes the ThemeManager API.
 - `app/static/js/theme-widget.js` - Handles the on-page theme picker controls and interactions.
 - `app/static/js/header-menu.js` - Manages the responsive header menu toggle and accessibility states.
-- `app/static/js/footer-year.js` - Writes the current year into the footer copyright.
-- `app/static/js/favicon-version.js` - Appends a date query to bust favicon cache daily.
 - `app/static/js/blog-tags.js` - Enables filtering blog cards by tag and syncs the URL query.
 - `app/static/js/post-sections.js` - Builds the blog post outline indicator and scroll syncing.
 - `app/static/js/holiday-shared.js` - Determines the active holiday emoji, accent, and trivia metadata.
@@ -126,6 +125,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Holiday & seasonal flourishes
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
 - `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
+- `build.py` stamps favicon links with a daily version derived from `holiday-details.json` so browsers refresh the emoji without extra scripts.
 - `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
 - The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
 
