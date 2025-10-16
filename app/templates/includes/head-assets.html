@@ -3,14 +3,14 @@
     window.__HOLIDAY_DETAILS__ = {{ holiday_details | tojson }};
   </script>
   {% endif %}
-  <script src="/static/js/theme-config.js"></script>
-  <script src="/static/js/theme-preload.js"></script>
-  <script defer src="/static/js/theme-init.js"></script>
+  <script src="/static/js/theme-config.js?v={{ static_version }}"></script>
+  <script src="/static/js/theme-preload.js?v={{ static_version }}"></script>
+  <script defer src="/static/js/theme-init.js?v={{ static_version }}"></script>
   <link rel="icon" href="/static/images/favicon.svg?v={{ favicon_version | default('1') }}" type="image/svg+xml" sizes="any" />
   <link rel="shortcut icon" href="/static/images/default.ico?v={{ favicon_version | default('1') }}" type="image/x-icon" />
-  <link rel="stylesheet" href="/static/css/base.css" />
-  <link rel="stylesheet" href="/static/css/theme.css" />
-  <link rel="stylesheet" href="/static/css/generated/theme-accents.css" />
-  <link rel="stylesheet" href="/static/css/components/header.css" />
-  <link rel="stylesheet" href="/static/css/components/footer.css" />
-  <link rel="stylesheet" href="/static/css/theme-widget.css" />
+  <link rel="stylesheet" href="/static/css/base.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/theme.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/generated/theme-accents.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/components/header.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/components/footer.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/theme-widget.css?v={{ static_version }}" />

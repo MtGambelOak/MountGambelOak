@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block page_title %}Blog{% endblock %} · Mount Gambel Oak</title>
   {% include 'includes/head-assets.html' %}
-  <link rel="stylesheet" href="/static/css/components/tag-chip.css" />
-  <link rel="stylesheet" href="/static/css/pages/blog-post.css" />
+  <link rel="stylesheet" href="/static/css/components/tag-chip.css?v={{ static_version }}" />
+  <link rel="stylesheet" href="/static/css/pages/blog-post.css?v={{ static_version }}" />
 </head>
 <body>
   {% set active_page = 'blog' %}
@@ -19,6 +19,6 @@
   {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
-  <script src="/static/js/post-sections.js"></script>
+  <script src="/static/js/post-sections.js?v={{ static_version }}"></script>
 </body>
 </html>

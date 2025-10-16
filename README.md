@@ -127,6 +127,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
 - `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
 - `build.py` stamps favicon links with a daily version derived from `holiday-details.json` so browsers refresh the emoji without extra scripts.
+- Every build emits a `static_version` token so CSS/JS/image URLs carry `?v=...` query strings, letting browsers cache assets aggressively between deployments.
 - `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
 - The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
 

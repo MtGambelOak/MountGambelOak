@@ -81,6 +81,7 @@ def resolve_favicon_version(details):
 
 
 FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
+STATIC_VERSION = datetime.now(UTC).strftime("%Y%m%d%H%M%S")
 CURRENT_YEAR = datetime.now(UTC).year
 
 
@@ -99,11 +100,35 @@ def generate_theme_css():
 
 generate_theme_css()
 
+
+def remove_directory(path: str) -> None:
+    if not os.path.exists(path):
+        return
+
+    shutil.rmtree(path, ignore_errors=True)
+    if not os.path.exists(path):
+        return
+
+    for root, dirs, files in os.walk(path, topdown=False):
+        for name in files:
+            try:
+                os.unlink(os.path.join(root, name))
+            except FileNotFoundError:
+                continue
+        for name in dirs:
+            dir_path = os.path.join(root, name)
+            try:
+                os.rmdir(dir_path)
+            except OSError:
+                continue
+    try:
+        os.rmdir(path)
+    except OSError as err:
+        raise RuntimeError(f"Failed to remove existing '{path}' directory") from err
+
+
 # Clean output dir
-if os.path.exists(DIST):
-    shutil.rmtree(DIST, ignore_errors=True)
-    if os.path.exists(DIST):
-        raise RuntimeError(f"Failed to remove existing '{DIST}' directory")
+remove_directory(DIST)
 os.makedirs(DIST, exist_ok=True)
 
 # Copy static assets
@@ -114,6 +139,7 @@ env = Environment(loader=FileSystemLoader(TEMPLATES))
 env.globals["holiday_details"] = HOLIDAY_DETAILS
 env.globals["favicon_version"] = FAVICON_VERSION
 env.globals["current_year"] = CURRENT_YEAR
+env.globals["static_version"] = STATIC_VERSION
 
 # Render each template
 # (template name, output path)

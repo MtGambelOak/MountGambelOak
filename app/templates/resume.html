@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Resume · Mount Gambel Oak</title>
   {% include 'includes/head-assets.html' %}
-  <link rel="stylesheet" href="/static/css/pages/resume.css" />
+  <link rel="stylesheet" href="/static/css/pages/resume.css?v={{ static_version }}" />
 </head>
 <body>
   {% set active_page = 'resume' %}
@@ -15,14 +15,14 @@
     <section class="resume-section resume-download">
       <h1>Resume</h1>
       <div class="resume-download-actions">
-        <a class="btn" href="/static/docs/Lucas-Pearce-Resume.pdf" target="_blank" rel="noopener">Open PDF</a>
-        <a class="btn secondary" href="/static/docs/Lucas-Pearce-Resume.pdf" download>Download PDF</a>
+        <a class="btn" href="/static/docs/Lucas-Pearce-Resume.pdf?v={{ static_version }}" target="_blank" rel="noopener">Open PDF</a>
+        <a class="btn secondary" href="/static/docs/Lucas-Pearce-Resume.pdf?v={{ static_version }}" download>Download PDF</a>
       </div>
     </section>
 
     <section class="resume-preview">
       <iframe
-        src="/static/docs/Lucas-Pearce-Resume.pdf"
+        src="/static/docs/Lucas-Pearce-Resume.pdf?v={{ static_version }}"
         title="Lucas Pearce Resume"
         loading="lazy"
       ></iframe>
