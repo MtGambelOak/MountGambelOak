@@ -12,7 +12,7 @@ STATIC = os.path.join(SRC_DIR, "static")
 DIST = "dist"
 BLOG_POSTS_FILE = os.path.join(SRC_DIR, "blog", "blog_posts.json")
 HOLIDAY_DETAILS_FILE = os.path.join(STATIC, "data", "holiday-details.json")
-THEME_CSS_SCRIPT = Path("scripts") / "generate-theme-css.js"
+THEME_CSS_SCRIPT = Path(SRC_DIR) / "static" / "js" / "generate-theme-css.js"
 WORDS_PER_MINUTE = 200
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
@@ -47,12 +47,10 @@ if os.path.exists(BLOG_POSTS_FILE):
 
 # Holiday details
 DEFAULT_HOLIDAY_DETAILS = {
-    "generatedAt": None,
-    "name": None,
     "emoji": "🗻",
     "accent": "forest",
     "title": "Seasonal Snapshot",
-    "fact": "Stay curious; the holiday cron will surprise you again tomorrow.",
+    "fact": "Something went horribly wrong!",
 }
 
 
