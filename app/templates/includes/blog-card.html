@@ -1,0 +1,30 @@
+{% macro render_blog_card(post, heading_level=2) %}
+  {% if post %}
+    {% set tags = post.tags | default([], true) %}
+    {% set heading = 'h%s' % heading_level %}
+    <article class="blog-card" data-tags="{{ tags | join('||') }}">
+      <header>
+        <{{ heading }}>
+          <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+        </{{ heading }}>
+        <p class="blog-card-meta">
+          <span>{{ post.date }}</span>
+          {% if post.updated and post.updated != post.date %}
+          <span>Updated {{ post.updated }}</span>
+          {% endif %}
+          {% if post.reading_time_minutes %}
+          <span>{{ post.reading_time_minutes }} min read</span>
+          {% endif %}
+        </p>
+      </header>
+      <p class="blog-card-summary">{{ post.summary }}</p>
+      {% if tags %}
+      <ul class="blog-card-tags">
+        {% for tag in tags %}
+        <li><a class="tag-chip" data-tag="{{ tag }}" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </article>
+  {% endif %}
+{% endmacro %}

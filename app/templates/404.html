@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="/static/css/pages/not-found.css" />
 </head>
 <body>
-  {% set page_kind = page_type | default('404') %}
   {% include 'includes/header.html' %}
 
   <main class="not-found">
@@ -35,5 +34,6 @@
   {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
+  <script src="/static/js/holiday-trivia.js"></script>
 </body>
 </html>

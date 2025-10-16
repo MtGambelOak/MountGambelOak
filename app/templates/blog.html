@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Blog · Mount Gambel Oak</title>
   {% include 'includes/head-assets.html' %}
+  <link rel="stylesheet" href="/static/css/components/blog-card.css" />
+  <link rel="stylesheet" href="/static/css/components/tag-chip.css" />
   <link rel="stylesheet" href="/static/css/pages/blog.css" />
 </head>
 <body>
   {% set active_page = 'blog' %}
+  {% from 'includes/blog-card.html' import render_blog_card %}
   {% include 'includes/header.html' %}
 
   <main class="blog">
@@ -29,28 +32,7 @@
         {% endif %}
         <div class="blog-card-list">
           {% for post in posts %}
-          <article class="blog-card" data-tags="{{ post.tags | default([], true) | join('||') }}">
-            <header>
-              <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
-              <p class="blog-card-meta">
-                <span>{{ post.date }}</span>
-                {% if post.updated and post.updated != post.date %}
-                <span>Updated {{ post.updated }}</span>
-                {% endif %}
-                {% if post.reading_time_minutes %}
-                <span>{{ post.reading_time_minutes }} min read</span>
-                {% endif %}
-              </p>
-            </header>
-            <p class="blog-card-summary">{{ post.summary }}</p>
-            {% if post.tags %}
-            <ul class="blog-card-tags">
-              {% for tag in post.tags %}
-              <li><a class="tag-chip" data-tag="{{ tag }}" href="/blog?tag={{ tag }}">{{ tag }}</a></li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-          </article>
+          {{ render_blog_card(post) }}
           {% endfor %}
         </div>
       {% else %}
@@ -68,5 +50,6 @@
   {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
+  <script src="/static/js/blog-tags.js"></script>
 </body>
 </html>

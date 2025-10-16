@@ -19,11 +19,19 @@
   min-width: 0;
 }
 
-.site-header h1 {
+.site-header-title {
+  display: inline-flex;
+  align-items: center;
   margin: 0;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.5rem;
   color: inherit;
+  text-decoration: none;
+}
+
+.site-header-title:hover,
+.site-header-title:focus-visible {
+  text-decoration: underline;
 }
 
 .site-header-panel {
