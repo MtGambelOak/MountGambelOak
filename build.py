@@ -56,8 +56,6 @@ env = Environment(loader=FileSystemLoader(TEMPLATES))
 # Render each template
 # (template name, output path)
 pages = [
-    ("footer.html", "footer.html"),
-    ("header.html", "header.html"),
     ("index.html", "index.html"),
     ("404.html", "404.html"),
     ("blog.html", os.path.join("blog", "index.html")),

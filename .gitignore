@@ -4,9 +4,5 @@ __pycache__/
 dist/
 *.pyc
 
-# Container / server configs
-Dockerfile
-docker-compose.yml
-Caddyfile
-.dockerignore
-
+# Local dev helpers
+scripts/

@@ -9,13 +9,13 @@
 </head>
 <body>
   {% set active_page = 'blog' %}
-  {% include 'header.html' %}
+  {% include 'includes/header.html' %}
 
   <main class="blog-post">
     {% block post_wrapper %}{% endblock %}
   </main>
 
-  {% include 'footer.html' %}
+  {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
 </body>

@@ -9,7 +9,7 @@
 </head>
 <body>
   {% set page_kind = page_type | default('404') %}
-  {% include 'header.html' %}
+  {% include 'includes/header.html' %}
 
   <main class="not-found">
     <span class="not-found-emoji" aria-hidden="true">🧭</span>
@@ -32,7 +32,7 @@
 
   </main>
 
-  {% include 'footer.html' %}
+  {% include 'includes/footer.html' %}
 
   {% include 'includes/footer-scripts.html' %}
 </body>
