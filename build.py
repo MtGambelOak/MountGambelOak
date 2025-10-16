@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import subprocess
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 import markdown
@@ -12,7 +11,6 @@ STATIC = os.path.join(SRC_DIR, "static")
 DIST = "dist"
 BLOG_POSTS_FILE = os.path.join(SRC_DIR, "blog", "blog_posts.json")
 HOLIDAY_DETAILS_FILE = os.path.join(STATIC, "data", "holiday-details.json")
-THEME_CSS_SCRIPT = Path("scripts") / "generate-theme-css.js"
 WORDS_PER_MINUTE = 200
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
@@ -70,20 +68,6 @@ def load_holiday_details():
 
 
 HOLIDAY_DETAILS = load_holiday_details()
-
-# Generate accent CSS before copying assets
-def generate_theme_css():
-    script_path = THEME_CSS_SCRIPT
-    if not script_path.exists():
-        return
-    try:
-        subprocess.run(["node", str(script_path)], check=True)
-    except FileNotFoundError:
-        print("Warning: Node.js not found; skipping accent CSS generation.")
-    except subprocess.CalledProcessError as exc:
-        print(f"Warning: Failed to generate theme accent CSS ({exc}).")
-
-generate_theme_css()
 
 # Clean output dir
 if os.path.exists(DIST):

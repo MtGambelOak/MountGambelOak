@@ -125,7 +125,6 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Holiday & seasonal flourishes
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
 - `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
-- `scripts/generate-theme-css.js` turns the accent palette into `static/css/generated/theme-accents.css`; `build.py` runs it automatically before copying assets.
 - The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
 
 ---
