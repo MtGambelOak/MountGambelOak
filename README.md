@@ -50,6 +50,58 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ---
 
+## File reference
+
+### Templates
+- `app/templates/index.html` - Home page layout with intro, FAQ, and latest blog teaser.
+- `app/templates/projects.html` - Projects page template for portfolio entries.
+- `app/templates/resume.html` - Resume landing page linking to the PDF.
+- `app/templates/404.html` - Not-found page shown for missing routes.
+- `app/templates/blog.html` - Blog index page with tag filtering UI.
+- `app/templates/blog/post.html` - Individual blog post content template.
+- `app/templates/blog/post_layout.html` - Shared wrapper for blog post pages.
+- `app/templates/includes/head-assets.html` - Common `<head>` scripts, styles, and favicons.
+- `app/templates/includes/header.html` - Site header and navigation bar include.
+- `app/templates/includes/footer.html` - Footer markup with contact links and holiday icon slot.
+- `app/templates/includes/footer-scripts.html` - Script bundle loaded at the end of each page.
+
+### CSS
+- `app/static/css/base.css` - Global resets, typography, and layout primitives.
+- `app/static/css/theme.css` - Theme variables and light/dark surface rules.
+- `app/static/css/theme-widget.css` - Styles for the theme switcher popup.
+- `app/static/css/components/header.css` - Header and navigation component styling.
+- `app/static/css/components/footer.css` - Footer layout, seasonal emoji, and trivia styles.
+- `app/static/css/components/blog-card.css` - Blog card list styles used on the home and blog pages.
+- `app/static/css/components/tag-chip.css` - Pill styles for blog tag chips.
+- `app/static/css/pages/home.css` - Home page specific sections and responsive tweaks.
+- `app/static/css/pages/projects.css` - Project grid and timeline styling.
+- `app/static/css/pages/resume.css` - Resume download section layout.
+- `app/static/css/pages/blog.css` - Blog index layout and tag filter styles.
+- `app/static/css/pages/blog-post.css` - Article layout, outline, and prose formatting.
+- `app/static/css/pages/not-found.css` - 404 page styling.
+- `app/static/css/giscus-light.css` - Light mode overrides for the Giscus comments widget.
+- `app/static/css/giscus-dark.css` - Dark mode overrides for the Giscus comments widget.
+
+### JavaScript
+- `app/static/js/theme-config.js` - Defines theme storage keys and available accent palette.
+- `app/static/js/theme-init.js` - Loads stored theme preferences and exposes the ThemeManager API.
+- `app/static/js/theme-widget.js` - Handles the on-page theme picker controls and interactions.
+- `app/static/js/header-menu.js` - Manages the responsive header menu toggle and accessibility states.
+- `app/static/js/footer-year.js` - Writes the current year into the footer copyright.
+- `app/static/js/favicon-version.js` - Appends a date query to bust favicon cache daily.
+- `app/static/js/blog-tags.js` - Enables filtering blog cards by tag and syncs the URL query.
+- `app/static/js/post-sections.js` - Builds the blog post outline indicator and scroll syncing.
+- `app/static/js/holiday-shared.js` - Determines the active holiday emoji and accent utilities.
+- `app/static/js/holiday-init.js` - Injects the seasonal emoji into CSS variables during load.
+- `app/static/js/holiday.js` - Updates the footer emoji display based on the current holiday.
+- `app/static/js/holiday-trivia.js` - Displays contextual holiday trivia in the footer widget.
+- `app/static/js/icon-update.js` - Node script that regenerates the favicon SVG with the holiday emoji.
+
+### Blog content
+- `app/blog/blog_posts.json` - Blog metadata registry (slug, tags, dates, and source paths).
+
+---
+
 ## Content & theming workflows
 
 ### Add or update pages
@@ -76,7 +128,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Holiday & seasonal flourishes
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
 - `holiday-init.js`, `holiday.js`, and `holiday-trivia.js` react to that schedule to refresh the favicon, footer emoji, and trivia section.
-- The GitHub Action runs nightly to regenerate the favicon automatically; run the Node script locally if you want instant updates.
+- The GitHub Action runs nightly to regenerate the favicon automatically; a cron job runs on the host machine to update the favicon for local development to keep it in sync with production.
 
 ---
 
@@ -90,6 +142,5 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ## Support scripts & notes
 - `build.py` is the single source of truth for derived blog metadata. Keep it updated if you introduce new fields shared between the blog index and individual posts.
-- A cron job runs on the host machine to update the favicon for local development to keep it in sync with production.
 
 ---
