@@ -30,16 +30,8 @@
 }
 
 .blog-placeholder {
-  background: rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   padding: 1.75rem;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-}
-
-.dark .blog-placeholder {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .blog-placeholder h2 {

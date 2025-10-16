@@ -47,6 +47,22 @@ main p {
   line-height: 1.6;
 }
 
+/* Shared raised panel styling */
+.blog-card,
+.blog-placeholder,
+.project-card {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+.dark .blog-card,
+.dark .blog-placeholder,
+.dark .project-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 /* Shared typography helpers */
 article p + p {
   margin-top: 0.85rem;
