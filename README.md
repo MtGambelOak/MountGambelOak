@@ -2,6 +2,8 @@
 
 A personal website. The project renders a static bundle with Jinja templates and markdown-driven blog content, then publishes the bundle to GitHub Pages. The site is tested locally before pushing to GitHub Pages, where workflows automate its build and deployment live at https://mountgambeloak.dev.
 
+The goal of this website is to document its layout and workflows for its owner, NOT to document a method by which other random people can pull and contribute to the website. There are some local development workflows that are briefly outlined below, but are already set up and working.
+
 ---
 
 ## Overview
