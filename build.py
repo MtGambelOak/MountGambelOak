@@ -101,8 +101,10 @@ generate_theme_css()
 
 # Clean output dir
 if os.path.exists(DIST):
-    shutil.rmtree(DIST)
-os.makedirs(DIST)
+    shutil.rmtree(DIST, ignore_errors=True)
+    if os.path.exists(DIST):
+        raise RuntimeError(f"Failed to remove existing '{DIST}' directory")
+os.makedirs(DIST, exist_ok=True)
 
 # Copy static assets
 shutil.copytree(STATIC, os.path.join(DIST, "static"))

@@ -17,11 +17,17 @@
   <main>
     <section class="intro">
       <figure class="intro-media">
-        <img
-          src="/static/images/gambeldev.jpg"
-          alt="Portrait of Lucas Pearce"
-          loading="lazy"
-        />
+        <picture>
+          <source srcset="/static/images/gambeldev.webp" type="image/webp" />
+          <img
+            src="/static/images/gambeldev.jpg"
+            alt="Portrait of Lucas Pearce"
+            width="320"
+            height="427"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </picture>
       </figure>
 
       <div class="intro-content">

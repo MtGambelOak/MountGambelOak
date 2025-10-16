@@ -92,6 +92,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `app/static/js/post-sections.js` - Builds the blog post outline indicator and scroll syncing.
 - `app/static/js/holiday-shared.js` - Determines the active holiday emoji, accent, and trivia metadata.
 - `app/static/js/icon-update.js` - Node script that regenerates the favicon SVG with the holiday emoji.
+- `scripts/convert-images-to-webp.py` - Utility for resizing key assets and generating WebP variants under `static/images/` (use `--overwrite-source` to update the original PNG/JPEG files).
 
 
 ### Blog content
