@@ -6,3 +6,7 @@ dist/
 
 # Local dev helpers
 scripts/
+
+# Generated assets
+app/static/css/generated/
+app/static/data/

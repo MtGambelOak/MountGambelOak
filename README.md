@@ -94,6 +94,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `app/static/js/holiday-shared.js` - Determines the active holiday emoji, accent, and trivia metadata.
 - `app/static/js/icon-update.js` - Node script that regenerates the favicon SVG with the holiday emoji.
 
+
 ### Blog content
 - `app/blog/blog_posts.json` - Blog metadata registry (slug, tags, dates, and source paths).
 
@@ -125,6 +126,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Holiday & seasonal flourishes
 - `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
 - `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
+- `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
 - The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
 
 ---
@@ -139,5 +141,6 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ## Support scripts & notes
 - `build.py` is the single source of truth for derived blog metadata. Keep it updated if you introduce new fields shared between the blog index and individual posts.
+- `scripts/generate-theme-css.js` - Builds the accent class stylesheet from the shared palette during `python build.py`.
 
 ---
