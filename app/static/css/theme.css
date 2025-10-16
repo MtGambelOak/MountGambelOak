@@ -38,3 +38,12 @@
 }
 
 /* Individual accent classes generated at build time */
+
+.dark.accent-black {
+  --accent-text: color-mix(in srgb, white 85%, black 15%);
+}
+
+.light.accent-white,
+.light.accent-ivory {
+  --accent-text: color-mix(in srgb, black 80%, var(--accent) 20%);
+}
