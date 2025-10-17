@@ -41,7 +41,7 @@
 }
 
 .resume-preview iframe {
-  width: min(100%, 840px);
+  width: var(--main-max-width);
   height: 80vh;
   border: none;
   display: block;

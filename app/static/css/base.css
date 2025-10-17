@@ -4,7 +4,7 @@
   --btn-radius: 6px;
   --btn-padding: 0.75rem 1.5rem;
   --btn-transition: background-color 0.3s ease;
-  --main-max-width: 768px;
+  --main-max-width: clamp(320px, 85vw, 1100px);
   --main-radius: 8px;
 
   /* fallback accent */

@@ -11,8 +11,9 @@
 }
 
 .intro-media img {
-  width: 100%;
-  max-width: 320px;
+  width: min(100%, clamp(200px, 60vw, 320px));
+  aspect-ratio: 320 / 427;
+  height: auto;
   display: block;
   border-radius: 16px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);

@@ -1,6 +1,5 @@
 /* Blog post layout */
 .blog-post {
-  max-width: min(1040px, 100%);
   margin: 3rem auto;
   background: var(--main-bg);
   padding: clamp(2rem, 5vw, 3rem);

@@ -1,6 +1,5 @@
 /* Not-found layout */
 .not-found {
-  max-width: min(760px, 100%);
   background: var(--main-bg);
   margin: 3rem auto;
   padding: clamp(2rem, 5vw, 3rem);

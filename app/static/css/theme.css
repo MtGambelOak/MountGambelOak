@@ -32,7 +32,7 @@
 .dark {
   --bg: #121010;
   --text: #eee;
-  --main-bg: #121212;
+  --main-bg: rgba(255,255,255,0.02);
   --main-text: #eee;
   --footer-bg-opacity: 1;
 }
