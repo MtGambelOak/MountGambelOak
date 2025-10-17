@@ -29,7 +29,20 @@ function buildAccentCss(palette) {
 function main() {
   const css = buildAccentCss(themeConfig.accentPalette);
   ensureDir(OUTPUT_DIR);
-  fs.writeFileSync(OUTPUT_FILE, css ? css + '\n' : '', 'utf8');
+  const nextContents = css ? css + '\n' : '';
+
+  try {
+    const currentContents = fs.readFileSync(OUTPUT_FILE, 'utf8');
+    if (currentContents === nextContents) {
+      return;
+    }
+  } catch (err) {
+    if (err.code !== 'ENOENT') {
+      throw err;
+    }
+  }
+
+  fs.writeFileSync(OUTPUT_FILE, nextContents, 'utf8');
 }
 
 if (require.main === module) {
