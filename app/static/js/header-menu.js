@@ -105,7 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const brandRect = brand.getBoundingClientRect();
     const panelRect = panel.getBoundingClientRect();
-    const panelWrapped = panelRect.top - brandRect.top > 1;
+    // Compare the top of the panel with the bottom of the brand element to detect an actual wrap.
+    const panelWrapped = panelRect.top - brandRect.bottom > 1;
     const navOverflow = nav.scrollWidth - nav.clientWidth > 1;
     const shouldCollapse = panelWrapped || navOverflow;
 
