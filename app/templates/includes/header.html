@@ -1,6 +1,6 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class="site-header">
+<header class="site-header is-precollapsible">
   <div class="site-header-brand">
     <a class="site-header-title" href="/">GambelDev</a>
     <button
@@ -80,3 +80,17 @@
     </div>
   </div>
 </header>
+
+<noscript>
+  <style>
+    .site-header.is-precollapsible .site-nav-toggle {
+      display: none !important;
+    }
+
+    .site-header.is-precollapsible .site-header-panel {
+      max-height: none !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+  </style>
+</noscript>

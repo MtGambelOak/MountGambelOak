@@ -95,6 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const evaluateLayout = () => {
+    if (header.classList.contains('is-precollapsible')) {
+      header.classList.remove('is-precollapsible');
+    }
+
     const wasCollapsible = header.classList.contains('is-collapsible');
     const wasOpen = header.classList.contains('is-open');
 
