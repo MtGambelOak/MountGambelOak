@@ -43,10 +43,10 @@
       {% if prev_post or next_post %}
       <nav class="blog-post-nav" aria-label="Post navigation">
         {% if prev_post %}
-        <a class="post-nav-link prev" href="/blog/{{ prev_post.slug }}">Previous post</a>
+        <a class="post-nav-link prev" href="/blog/{{ prev_post.slug }}">Newer post</a>
         {% endif %}
         {% if next_post %}
-        <a class="post-nav-link next" href="/blog/{{ next_post.slug }}">Next post</a>
+        <a class="post-nav-link next" href="/blog/{{ next_post.slug }}">Older post</a>
         {% endif %}
       </nav>
       {% endif %}
