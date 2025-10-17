@@ -6,11 +6,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = panel ? panel.querySelector('nav') : null;
   if (!header || !toggle || !panel || !brand || !nav) return;
 
+  const focusableSelector = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]',
+  ].join(',');
+
+  const setPanelFocusEnabled = (enabled) => {
+    if (!panel) return;
+    const items = panel.querySelectorAll(focusableSelector);
+    items.forEach((item) => {
+      const stored = item.dataset.panelTabindex;
+      if (enabled) {
+        if (stored === 'unset') {
+          item.removeAttribute('tabindex');
+        } else if (stored !== undefined) {
+          item.setAttribute('tabindex', stored);
+        }
+        delete item.dataset.panelTabindex;
+      } else {
+        if (stored === undefined) {
+          item.dataset.panelTabindex = item.hasAttribute('tabindex')
+            ? item.getAttribute('tabindex')
+            : 'unset';
+        }
+        item.setAttribute('tabindex', '-1');
+      }
+    });
+  };
+
   const closeNav = () => {
     if (!header.classList.contains('is-collapsible')) return;
     header.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
     panel.setAttribute('aria-hidden', 'true');
+    setPanelFocusEnabled(false);
   };
 
   const openNav = () => {
@@ -18,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.add('is-open');
     toggle.setAttribute('aria-expanded', 'true');
     panel.setAttribute('aria-hidden', 'false');
+    setPanelFocusEnabled(true);
   };
 
   toggle.addEventListener('click', () => {
@@ -80,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
       toggle.hidden = false;
       toggle.setAttribute('aria-expanded', wasOpen ? 'true' : 'false');
       panel.setAttribute('aria-hidden', wasOpen ? 'false' : 'true');
+      setPanelFocusEnabled(wasOpen);
       if (wasOpen) {
         header.classList.add('is-open');
       }
@@ -94,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.setAttribute('aria-hidden', 'true');
       toggle.hidden = false;
       toggle.setAttribute('aria-expanded', 'false');
+      setPanelFocusEnabled(false);
       if (wasOpen) {
         openNav();
       } else {
@@ -104,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
       panel.removeAttribute('aria-hidden');
       toggle.hidden = true;
       toggle.setAttribute('aria-expanded', 'false');
+      setPanelFocusEnabled(true);
     }
   };
 
