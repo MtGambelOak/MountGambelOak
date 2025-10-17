@@ -32,6 +32,7 @@
 
 .site-header-title:hover,
 .site-header-title:focus-visible {
+  color: var(--nav-link-hover);
   text-decoration: underline;
 }
 
