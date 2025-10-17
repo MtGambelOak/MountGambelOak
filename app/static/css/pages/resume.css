@@ -47,6 +47,18 @@
   display: block;
 }
 
+.resume-preview-note {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--main-text);
+  font-size: 0.95rem;
+}
+
+.dark .resume-preview-note {
+  background: rgba(0, 0, 0, 0.35);
+}
+
 @media (max-width: 768px) {
   .resume {
     gap: 2.25rem;

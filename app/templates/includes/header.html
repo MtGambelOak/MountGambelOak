@@ -1,3 +1,5 @@
+<a class="skip-link" href="#main-content">Skip to content</a>
+
 <header class="site-header">
   <div class="site-header-brand">
     <a class="site-header-title" href="/">GambelDev</a>
@@ -14,11 +16,21 @@
   </div>
 
   <div class="site-header-panel" id="site-header-panel">
-    <nav>
-      <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
-      <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
-      <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
-      <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li>
+          <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
+        </li>
+        <li>
+          <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
+        </li>
+        <li>
+          <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
+        </li>
+        <li>
+          <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
+        </li>
+      </ul>
     </nav>
 
     <div class="theme-wrapper">

@@ -1,7 +1,14 @@
 <footer class="footer-with-holiday">
   <div class="footer-cluster">
     <div class="footer-links">
-      <a href="https://github.com/MtGambelOak" target="_blank" rel="noopener" class="icon-btn">
+      <a
+        href="https://github.com/MtGambelOak"
+        target="_blank"
+        rel="noopener"
+        class="icon-btn"
+        aria-label="GitHub"
+        title="GitHub"
+      >
         <picture>
           <source srcset="/static/images/github-mark-white.webp?v={{ static_version }}" type="image/webp" />
           <img
@@ -14,8 +21,16 @@
             height="225"
           />
         </picture>
+        <span class="sr-only">GitHub</span>
       </a>
-      <a href="https://www.linkedin.com/in/lucaspearce" target="_blank" rel="noopener" class="icon-btn">
+      <a
+        href="https://www.linkedin.com/in/lucaspearce"
+        target="_blank"
+        rel="noopener"
+        class="icon-btn"
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
         <picture>
           <source srcset="/static/images/InBug-White.webp?v={{ static_version }}" type="image/webp" />
           <img
@@ -28,8 +43,16 @@
             height="779"
           />
         </picture>
+        <span class="sr-only">LinkedIn</span>
       </a>
-      <a href="https://www.inaturalist.org/people/gambel" target="_blank" rel="noopener" class="icon-btn">
+      <a
+        href="https://www.inaturalist.org/people/gambel"
+        target="_blank"
+        rel="noopener"
+        class="icon-btn"
+        aria-label="iNaturalist"
+        title="iNaturalist"
+      >
         <picture>
           <source srcset="/static/images/inat.webp?v={{ static_version }}" type="image/webp" />
           <img
@@ -40,6 +63,7 @@
             height="2000"
           />
         </picture>
+        <span class="sr-only">iNaturalist</span>
       </a>
     </div>
 
@@ -48,15 +72,17 @@
       href="/holiday-trivia"
       class="holiday-emoji-link"
       aria-label="Holiday trivia: {{ holiday.title }}"
-    >
-      <div
-        id="holiday-footer-image"
-        class="holiday-image"
-        title="{{ holiday.title }}"
-        aria-hidden="true"
-      >{{ holiday.emoji }}</div>
-    </a>
-  </div>
+      title="Holiday trivia: {{ holiday.title }}"
+      >
+        <div
+          id="holiday-footer-image"
+          class="holiday-image"
+          title="{{ holiday.title }}"
+          aria-hidden="true"
+        >{{ holiday.emoji }}</div>
+        <span class="sr-only">Holiday trivia: {{ holiday.title }}</span>
+      </a>
+    </div>
 
   <div class="footer-text">
     <span>&copy; {{ current_year }} Lucas Pearce. All rights reserved.</span><br />

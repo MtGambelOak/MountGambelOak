@@ -46,7 +46,7 @@
   {% from 'includes/blog-card.html' import render_blog_card %}
   {% include 'includes/header.html' %}
 
-  <main class="blog">
+  <main id="main-content" class="blog">
     <section class="blog-hero">
       <h1>Blog</h1>
       <p>Check back for updates on what I'm working on, and maybe the occasional philosophical musing.</p>
@@ -56,9 +56,9 @@
       {% if posts %}
         {% if all_tags %}
         <div class="blog-tag-filter" role="toolbar" aria-label="Filter by tag">
-          <button type="button" class="tag-chip tag-chip--active" data-tag="all">All</button>
+          <button type="button" class="tag-chip tag-chip--active" data-tag="all" aria-pressed="true" title="Show all posts">All</button>
           {% for tag in all_tags %}
-          <button type="button" class="tag-chip" data-tag="{{ tag }}">{{ tag }}</button>
+          <button type="button" class="tag-chip" data-tag="{{ tag }}" aria-pressed="false" title="Filter by {{ tag }}">{{ tag }}</button>
           {% endfor %}
         </div>
         {% endif %}

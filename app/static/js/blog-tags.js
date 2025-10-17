@@ -34,6 +34,7 @@
     filterButtons.forEach((btn) => {
       const matches = btn.dataset.tag === tag;
       btn.classList.toggle('tag-chip--active', matches);
+      btn.setAttribute('aria-pressed', matches ? 'true' : 'false');
     });
 
     const source = tag === 'all' ? postCards : tagToCards.get(tag);

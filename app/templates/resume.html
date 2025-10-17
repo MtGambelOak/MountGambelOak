@@ -43,7 +43,7 @@
   {% set active_page = 'resume' %}
   {% include 'includes/header.html' %}
 
-  <main class="resume">
+  <main id="main-content" class="resume">
     <section class="resume-section resume-download">
       <h1>Resume</h1>
       <div class="resume-download-actions">
@@ -58,6 +58,10 @@
         title="Lucas Pearce Resume"
         loading="lazy"
       ></iframe>
+      <p class="resume-preview-note">
+        If the preview does not load, use the download button above or
+        <a href="/static/docs/Lucas-Pearce-Resume.pdf?v={{ static_version }}">open the PDF directly</a>.
+      </p>
     </section>
   </main>
 

@@ -50,7 +50,7 @@
   {% set active_page = 'projects' %}
   {% include 'includes/header.html' %}
 
-  <main class="projects">
+  <main id="main-content" class="projects">
     <section class="projects-hero">
       <h1>Projects</h1>
       <p>Personal projects I've been working on. I like to build things that solve problems in my life.</p>
@@ -60,7 +60,10 @@
       <article class="project-card">
         <div class="project-meta">
           <h2>PitchParse</h2>
-          <span class="project-year">Summer 2024</span>
+          <div class="project-meta-info">
+            <span class="project-year">Summer 2024</span>
+            <span class="project-status project-status--shipped">Shipped</span>
+          </div>
         </div>
         <p class="project-summary">
           Generates custom Japanese study decks by filtering vocab lists on frequency, minimal pairs, and learner status.
@@ -78,8 +81,11 @@
 
       <article class="project-card">
         <div class="project-meta">
-          <h2>CreatureFinder</h2>
-          <span class="project-year">Fall 2025 - Present</span>
+          <h2>WhereWild</h2>
+          <div class="project-meta-info">
+            <span class="project-year">Fall 2025 - Present</span>
+            <span class="project-status project-status--in-progress">In progress</span>
+          </div>
         </div>
         <p class="project-summary">
           My team's senior capstone project, focusing on combining iNaturalist observation data with GIS data
@@ -95,7 +101,10 @@
       <article class="project-card">
         <div class="project-meta">
           <h2>AdSideline</h2>
-          <span class="project-year">Fall 2025 - Present</span>
+          <div class="project-meta-info">
+            <span class="project-year">Fall 2025 - Present</span>
+            <span class="project-status project-status--research">Research phase</span>
+          </div>
         </div>
         <p class="project-summary">
           A project focusing, on a high level, to address the pervasive problem of annoying, unhelpful,
