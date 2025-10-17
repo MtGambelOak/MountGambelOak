@@ -87,7 +87,7 @@ footer a {
 
 .icon-image {
   width: 1.6rem;
-  height: 1.6rem;
+  height: auto;
   display: block;
   transition: transform 0.2s ease;
 }

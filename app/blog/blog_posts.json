@@ -7,14 +7,5 @@
     "content": "blog/posts/ad-sideline-0.md",
     "tags": ["AdSideline", "Development Update", "NLP", "ML"],
     "updated": "2025-10-06"
-  },
-  {
-    "slug": "AdSideline-1",
-    "title": "Test post for now",
-    "date": "2024-04-01",
-    "summary": "Testing post.",
-    "content": "blog/posts/ad-sideline-1.md",
-    "tags": ["AdSideline", "Development Update", "Test"],
-    "updated": "2025-04-01"
   }
 ]
