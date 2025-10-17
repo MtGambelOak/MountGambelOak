@@ -4,6 +4,8 @@ import shutil
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
+from xml.etree.ElementTree import Element, ElementTree, SubElement
+from typing import Optional
 from jinja2 import Environment, FileSystemLoader
 import markdown
 
@@ -15,6 +17,9 @@ BLOG_POSTS_FILE = os.path.join(SRC_DIR, "blog", "blog_posts.json")
 HOLIDAY_DETAILS_FILE = os.path.join(STATIC, "data", "holiday-details.json")
 THEME_CSS_SCRIPT = Path(SRC_DIR) / "static" / "js" / "generate-theme-css.js"
 WORDS_PER_MINUTE = 200
+DEFAULT_SITE_BASE_URL = "https://mountgambeloak.dev"
+SITE_BASE_URL = os.environ.get("SITE_BASE_URL", DEFAULT_SITE_BASE_URL).rstrip("/") or DEFAULT_SITE_BASE_URL
+SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
     with open(BLOG_POSTS_FILE, "r", encoding="utf-8") as f:
@@ -72,17 +77,21 @@ HOLIDAY_DETAILS = load_holiday_details()
 
 
 # Derived metadata for templates
+BUILD_TIME = datetime.now(UTC)
+
+
 def resolve_favicon_version(details):
     stamp = details.get("generatedAt")
     if isinstance(stamp, str) and stamp:
         date_part = stamp.split("T", 1)[0]
         return date_part.replace("-", "")
-    return datetime.now(UTC).strftime("%Y%m%d")
+    return BUILD_TIME.strftime("%Y%m%d")
 
 
 FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
-STATIC_VERSION = datetime.now(UTC).strftime("%Y%m%d%H%M%S")
-CURRENT_YEAR = datetime.now(UTC).year
+STATIC_VERSION = BUILD_TIME.strftime("%Y%m%d%H%M%S")
+CURRENT_YEAR = BUILD_TIME.year
+BUILD_DATE = BUILD_TIME.date().isoformat()
 
 
 # Generate accent CSS before copying assets
@@ -142,16 +151,68 @@ env.globals["current_year"] = CURRENT_YEAR
 env.globals["static_version"] = STATIC_VERSION
 
 # Render each template
-# (template name, output path)
+# (template name, output path, include in sitemap)
 pages = [
-    ("index.html", "index.html"),
-    ("404.html", "404.html"),
-    ("blog.html", os.path.join("blog", "index.html")),
-    ("projects.html", os.path.join("projects", "index.html")),
-    ("resume.html", os.path.join("resume", "index.html")),
+    ("index.html", "index.html", True),
+    ("404.html", "404.html", False),
+    ("blog.html", os.path.join("blog", "index.html"), True),
+    ("projects.html", os.path.join("projects", "index.html"), True),
+    ("resume.html", os.path.join("resume", "index.html"), True),
 ]
 
-for template_name, output_path in pages:
+
+def normalize_output_path(output_path: str) -> str:
+    return output_path.replace(os.sep, "/")
+
+
+def output_path_to_url(output_path: str) -> str:
+    normalized = normalize_output_path(output_path)
+    if normalized == "index.html":
+        return "/"
+    if normalized.endswith("index.html"):
+        return "/" + normalized[: -len("index.html")]
+    return "/" + normalized
+
+
+def add_sitemap_entry(entries, output_path: str, lastmod: Optional[str] = None) -> None:
+    url_path = output_path_to_url(output_path)
+    loc = f"{SITE_BASE_URL}{url_path}"
+    entry = {"loc": loc}
+    if lastmod:
+        entry["lastmod"] = lastmod
+    entries.append(entry)
+
+
+def write_sitemap(entries) -> None:
+    if not entries:
+        return
+    urlset = Element("urlset", attrib={"xmlns": SITEMAP_NS})
+    for entry in entries:
+        url_el = SubElement(urlset, "url")
+        SubElement(url_el, "loc").text = entry["loc"]
+        lastmod = entry.get("lastmod")
+        if lastmod:
+            SubElement(url_el, "lastmod").text = lastmod
+    tree = ElementTree(urlset)
+    tree.write(os.path.join(DIST, "sitemap.xml"), encoding="utf-8", xml_declaration=True)
+
+
+def write_robots_txt() -> None:
+    robots_path = os.path.join(DIST, "robots.txt")
+    lines = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /404.html",
+        f"Sitemap: {SITE_BASE_URL}/sitemap.xml",
+        "",
+    ]
+    with open(robots_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+
+sitemap_entries = []
+
+for template_name, output_path, include_in_sitemap in pages:
     tpl = env.get_template(template_name)
     context = {}
     if template_name == "blog.html":
@@ -168,6 +229,8 @@ for template_name, output_path in pages:
 
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
+    if include_in_sitemap:
+        add_sitemap_entry(sitemap_entries, output_path, BUILD_DATE)
 
 # Render blog posts
 post_template = env.get_template("blog/post.html")
@@ -189,3 +252,9 @@ if BLOG_POSTS:
 
         with open(dest, "w", encoding="utf-8") as f:
             f.write(html)
+        post_output_path = os.path.join("blog", slug, "index.html")
+        post_lastmod = post.get("updated") or post.get("date") or BUILD_DATE
+        add_sitemap_entry(sitemap_entries, post_output_path, post_lastmod)
+
+write_sitemap(sitemap_entries)
+write_robots_txt()

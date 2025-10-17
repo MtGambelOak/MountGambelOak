@@ -155,6 +155,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - The job refreshes the favicon, installs Python dependencies, runs `python build.py`, and publishes `dist/` via `actions/deploy-pages`.
 - A scheduled run (`cron: 0 7 * * *`) keeps the public favicon in sync with the current holiday without manual intervention.
 - Rebuild `dist/` before committing to ensure GitHub Pages serves the latest HTML.
+- GitHub Pages serves `dist/404.html` for any unknown route (including `/holiday-trivia`); local static previews typically return the file directly instead of a 404 response, so open `dist/404.html` in a browser to test the not-found experience.
 
 ---
 
