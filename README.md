@@ -142,6 +142,13 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ---
 
+## SEO checklist
+- Page templates (`index`, `projects`, `resume`, `blog`) and the blog post layout emit `<title>`, descriptions, canonical URLs, Open Graph/Twitter cards, and JSON-LD structured data; update the copy near the top of each template if you change positioning or hero assets.
+- `build.py` writes `dist/sitemap.xml` and `dist/robots.txt` on every build (base URL comes from `SITE_BASE_URL`, defaulting to `https://mountgambeloak.dev`). Deploy the fresh `dist/` and submit/resubmit the sitemap in Google Search Console after major changes.
+- Blog post metadata lives in `app/blog/blog_posts.json`; adding or updating a post automatically refreshes the sitemap entry, schema, tags, and modified timestamp. Set `summary`, `updated`, and optional `social_image` there.
+
+---
+
 ## Responsive design notes
 - Layouts are mobile-first: base styles assume a single-column flow and scale up via `@media (min-width: …)` rules in each page/component stylesheet (e.g., `home.css`, `projects.css`).
 - The site header collapses into a toggleable menu when space runs out; `header-menu.js` measures the layout with `ResizeObserver`/`requestAnimationFrame` so the nav only collapses when necessary.
