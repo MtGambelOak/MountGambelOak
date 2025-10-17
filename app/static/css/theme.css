@@ -27,6 +27,8 @@
   --main-bg: rgba(255,255,255,0.9);
   --main-text: #4a4a4a;
   --footer-bg-opacity: 0.5;
+  --panel-bg: rgba(255,255,255,0.94);
+  --panel-border: rgba(0, 0, 0, 0.08);
 }
 
 .dark {
@@ -35,6 +37,8 @@
   --main-bg: rgba(255,255,255,0.02);
   --main-text: #eee;
   --footer-bg-opacity: 1;
+  --panel-bg: rgba(18, 18, 18, 0.94);
+  --panel-border: rgba(255, 255, 255, 0.12);
 }
 
 /* Individual accent classes generated at build time */

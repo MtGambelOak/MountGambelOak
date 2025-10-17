@@ -26,14 +26,15 @@
   top: 100%;
   right: 0;
   margin-top: 0.5rem;
-  background: var(--main-bg);
+  background: var(--panel-bg, var(--main-bg));
   color: var(--text);
-  border: 1px solid var(--border-color, #ccc);
+  border: 1px solid var(--panel-border, var(--border-color, #ccc));
   border-radius: 6px;
   padding: 1rem;
   width: min(340px, calc(100vw - 1.5rem));
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   z-index: 10;
+  backdrop-filter: blur(6px);
 }
 
 .hidden {
