@@ -1,9 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% set page_title = "Blog · Mount Gambel Oak" %}
+  {% set page_description = "Development updates, random thoughts, and more from Lucas Pearce (a.k.a GambelDev)." %}
+  {% set canonical_url = site_base_url ~ "/blog/" %}
+  {% set social_image_url = site_base_url ~ "/static/images/gambeldev.jpg?v=" ~ static_version %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Blog · Mount Gambel Oak</title>
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}" />
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mount Gambel Oak" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
+  <meta property="og:image" content="{{ social_image_url }}" />
+  <meta property="og:image:alt" content="GambelDev blog" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ page_title }}" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ social_image_url }}" />
+  <meta name="twitter:image:alt" content="GambelDev blog" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": {{ page_title | tojson }},
+      "url": "{{ canonical_url }}",
+      "description": {{ page_description | tojson }},
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Mount Gambel Oak",
+        "url": "{{ site_base_url }}/"
+      }
+    }
+  </script>
   {% include 'includes/head-assets.html' %}
   <link rel="stylesheet" href="/static/css/components/blog-card.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/components/tag-chip.css?v={{ static_version }}" />

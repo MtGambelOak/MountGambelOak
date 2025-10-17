@@ -1,9 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% set post_title = post.title if post.title else "Blog" %}
+  {% set page_title_text = post_title ~ " · Mount Gambel Oak" %}
+  {% set page_description = post.summary if post.summary else "Blog post by Lucas Pearce (GambelDev)." %}
+  {% set canonical_url = site_base_url ~ "/blog/" ~ post.slug ~ "/" %}
+  {% set social_image_url = post.social_image if post.social_image else site_base_url ~ "/static/images/gambeldev.jpg?v=" ~ static_version %}
+  {% set published_time = post.date %}
+  {% set modified_time = post.updated or post.date %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block page_title %}Blog{% endblock %} · Mount Gambel Oak</title>
+  <title>{{ page_title_text }}</title>
+  <meta name="description" content="{{ page_description }}" />
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Mount Gambel Oak" />
+  <meta property="og:title" content="{{ page_title_text }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
+  <meta property="og:image" content="{{ social_image_url }}" />
+  <meta property="og:image:alt" content="{{ post_title }}" />
+  <meta property="article:published_time" content="{{ published_time }}" />
+  <meta property="article:modified_time" content="{{ modified_time }}" />
+  {% if post.tags %}
+    {% for tag in post.tags %}
+  <meta property="article:tag" content="{{ tag }}" />
+    {% endfor %}
+  {% endif %}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ page_title_text }}" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ social_image_url }}" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ post_title | tojson }},
+      "description": {{ page_description | tojson }},
+      "datePublished": "{{ published_time }}",
+      "dateModified": "{{ modified_time }}",
+      "url": "{{ canonical_url }}",
+      "author": {
+        "@type": "Person",
+        "name": "Lucas Pearce"
+      }
+      {% if post.tags %},
+      "keywords": [{% for tag in post.tags %}{{ tag | tojson }}{% if not loop.last %}, {% endif %}{% endfor %}]
+      {% endif %}
+      {% if post.reading_time_minutes %},
+      "timeRequired": "PT{{ post.reading_time_minutes }}M"
+      {% endif %}
+    }
+  </script>
   {% include 'includes/head-assets.html' %}
   <link rel="stylesheet" href="/static/css/components/tag-chip.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/pages/blog-post.css?v={{ static_version }}" />

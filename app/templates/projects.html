@@ -1,9 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% set page_title = "Projects · Mount Gambel Oak" %}
+  {% set page_description = "Portfolio of NLP, GIS, and other projects by Lucas Pearce, including PitchParse, WhereWild, and AdSideline." %}
+  {% set canonical_url = site_base_url ~ "/projects/" %}
+  {% set social_image_url = site_base_url ~ "/static/images/gambeldev.jpg?v=" ~ static_version %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projects · Mount Gambel Oak</title>
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}" />
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mount Gambel Oak" />
+  <meta property="og:title" content="{{ page_title }}" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
+  <meta property="og:image" content="{{ social_image_url }}" />
+  <meta property="og:image:alt" content="Projects from Lucas Pearce" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ page_title }}" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ social_image_url }}" />
+  <meta name="twitter:image:alt" content="Projects from Lucas Pearce" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": {{ page_title | tojson }},
+      "url": "{{ canonical_url }}",
+      "description": {{ page_description | tojson }},
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Mount Gambel Oak",
+        "url": "{{ site_base_url }}/"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site_base_url }}/" },
+          { "@type": "ListItem", "position": 2, "name": "Projects", "item": "{{ canonical_url }}" }
+        ]
+      }
+    }
+  </script>
   {% include 'includes/head-assets.html' %}
   <link rel="stylesheet" href="/static/css/pages/projects.css?v={{ static_version }}" />
 </head>

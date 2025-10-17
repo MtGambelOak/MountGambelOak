@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% set page_description = "Lucas Pearce (also known as GambelDev)'s website! Presenting personal projects and blogging updates." %}
+  {% set canonical_url = site_base_url ~ "/" %}
+  {% set social_image_url = site_base_url ~ "/static/images/gambeldev.jpg?v=" ~ static_version %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mount Gambel Oak</title>
+  <meta name="description" content="{{ page_description }}" />
+  <link rel="canonical" href="{{ canonical_url }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mount Gambel Oak" />
+  <meta property="og:title" content="Mount Gambel Oak" />
+  <meta property="og:description" content="{{ page_description }}" />
+  <meta property="og:url" content="{{ canonical_url }}" />
+  <meta property="og:image" content="{{ social_image_url }}" />
+  <meta property="og:image:alt" content="Portrait of Lucas Pearce" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mount Gambel Oak" />
+  <meta name="twitter:description" content="{{ page_description }}" />
+  <meta name="twitter:image" content="{{ social_image_url }}" />
+  <meta name="twitter:image:alt" content="Portrait of GambelDev" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Mount Gambel Oak",
+      "url": "{{ canonical_url }}",
+      "description": {{ page_description | tojson }},
+      "publisher": {
+        "@type": "Person",
+        "name": "Lucas Pearce"
+      }
+    }
+  </script>
   {% include 'includes/head-assets.html' %}
   <link rel="stylesheet" href="/static/css/components/blog-card.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/components/tag-chip.css?v={{ static_version }}" />

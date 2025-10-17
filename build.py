@@ -149,6 +149,7 @@ env.globals["holiday_details"] = HOLIDAY_DETAILS
 env.globals["favicon_version"] = FAVICON_VERSION
 env.globals["current_year"] = CURRENT_YEAR
 env.globals["static_version"] = STATIC_VERSION
+env.globals["site_base_url"] = SITE_BASE_URL
 
 # Render each template
 # (template name, output path, include in sitemap)
