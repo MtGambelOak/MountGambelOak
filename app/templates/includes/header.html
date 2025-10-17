@@ -1,37 +1,10 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 
-<header class="site-header is-precollapsible">
-  <div class="site-header-brand">
-    <a class="site-header-title" href="/">GambelDev</a>
-    <button
-      class="site-nav-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="site-header-panel"
-      aria-label="Toggle navigation menu"
-    >
-      <span class="site-nav-toggle-icon" aria-hidden="true"></span>
-      <span class="site-nav-toggle-label">Menu</span>
-    </button>
-  </div>
-
-  <div class="site-header-panel" id="site-header-panel">
-    <nav aria-label="Primary">
-      <ul>
-        <li>
-          <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
-        </li>
-        <li>
-          <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
-        </li>
-        <li>
-          <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
-        </li>
-        <li>
-          <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
-        </li>
-      </ul>
-    </nav>
+<header class="site-header">
+  <div class="site-header-top">
+    <div class="site-header-brand">
+      <a class="site-header-title" href="/">GambelDev</a>
+    </div>
 
     <div class="theme-wrapper">
       <button id="theme-config-btn" aria-label="Open theme settings">
@@ -79,18 +52,21 @@
       </div>
     </div>
   </div>
+
+  <nav class="site-header-nav" aria-label="Primary">
+    <ul>
+      <li>
+        <a href="/" class="{{ 'active' if (active_page | default('')) == 'home' else '' }}">Home</a>
+      </li>
+      <li>
+        <a href="/projects/" class="{{ 'active' if (active_page | default('')) == 'projects' else '' }}">Projects</a>
+      </li>
+      <li>
+        <a href="/resume/" class="{{ 'active' if (active_page | default('')) == 'resume' else '' }}">Resume</a>
+      </li>
+      <li>
+        <a href="/blog/" class="{{ 'active' if (active_page | default('')) == 'blog' else '' }}">Blog</a>
+      </li>
+    </ul>
+  </nav>
 </header>
-
-<noscript>
-  <style>
-    .site-header.is-precollapsible .site-nav-toggle {
-      display: none !important;
-    }
-
-    .site-header.is-precollapsible .site-header-panel {
-      max-height: none !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
-  </style>
-</noscript>

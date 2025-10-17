@@ -76,7 +76,6 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `app/static/js/theme-preload.js` - Applies stored theme preferences before styles load to avoid flashes.
 - `app/static/js/theme-init.js` - Loads stored theme preferences and exposes the ThemeManager API.
 - `app/static/js/theme-widget.js` - Handles the on-page theme picker controls and interactions.
-- `app/static/js/header-menu.js` - Manages the responsive header menu toggle and accessibility states.
 - `app/static/js/blog-tags.js` - Enables filtering blog cards by tag and syncs the URL query.
 - `app/static/js/post-sections.js` - Builds the blog post outline indicator and scroll syncing.
 - `app/static/js/holiday-shared.js` - Determines the active holiday emoji, accent, and trivia metadata.
@@ -158,7 +157,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ## Responsive design notes
 - Layouts are mobile-first: base styles assume a single-column flow and scale up via `@media (min-width: …)` rules in each page/component stylesheet (e.g., `home.css`, `projects.css`).
-- The site header collapses into a toggleable menu when space runs out; `header-menu.js` measures the layout with `ResizeObserver`/`requestAnimationFrame` so the nav only collapses when necessary.
+- The site header relies on CSS flex layouts: brand/theme controls sit above the nav links on small screens and expand inline automatically on wider viewports—no JS needed.
 - Blog/project grids rely on CSS Grid `auto-fit` patterns so cards wrap cleanly across breakpoints without extra scripting.
 - Typography and spacing make use of `clamp()` and responsive units where needed to keep text comfortable on phones and widescreens.
 

@@ -12,6 +12,7 @@
   --btn-text: var(--accent-text, var(--accent));
   --btn-border: color-mix(in srgb, var(--accent-text, var(--accent)) 70%, var(--mix-dark) 30%);
   --btn-border-hover: color-mix(in srgb, var(--accent-text, var(--accent)) 65%, var(--mix-light) 35%);
+  --accent-hover: color-mix(in srgb, var(--accent) 82%, var(--mix-dark) 18%);
 
   --footer-bg: var(--accent);
   --footer-link: var(--header-text);
