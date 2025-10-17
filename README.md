@@ -6,10 +6,17 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ---
 
+## Quick Ops
+- **Ship updates:** A systemd on the host machine automatically runs `scripts/local-dev.sh` to kick off the watchfiles-based rebuild + static server. Commit and push to `main`; the GitHub Actions workflow rebuilds `dist/` and deploys to Pages automatically. Manual `python build.py` runs are only needed if the watcher/CI fails and you want to debug locally.
+- **Add a blog post:** Draft markdown under `app/blog/posts/<slug>.md`, register the entry in `app/blog/blog_posts.json`, and let the watcher regenerate. Push to `main` when satisfied.
+- **Tweak seasonal theming:** Update schedules or facts in `app/static/js/holiday-shared.js`, then run `node app/static/js/icon-update.js` to refresh the emoji favicon and `app/static/data/holiday-details.json`. Accent coolors can be updated via `app/static/js/theme-config.js`
+
+---
+
 ## Overview
 - `python build.py` compiles templates in `app/templates/` and markdown posts in `app/blog/posts/` into the static `dist/` directory.
 - Static assets (CSS, JS, images, resume PDF, favicon) live under `app/static/`; the build copies them verbatim.
-- Local preview uses the same static build served out of `dist/`; a local helper script (ignored from git) runs the rebuild watcher plus static server during development.
+- Local preview uses the same static build served out of `dist/`; `scripts/local-dev.sh` wraps the rebuild watcher plus static server during development.
 - A GitHub Actions workflow rebuilds `dist/` on pushes to `main` (and nightly for favicon refresh) and deploys it to Pages.
 
 ---
@@ -25,28 +32,10 @@ The goal of this website is to document its layout and workflows for its owner, 
 ## Architecture
 
 ### Build pipeline
-1. `build.py` clears `dist/`, copies everything from `app/static/`, and renders page templates to HTML.
+1. `build.py` clears `dist/`, copies everything from `app/static/`, and renders page templates to HTML. It is invoked automatically by the watcher (`scripts/local-dev.sh`) and by CI.
 2. Blog metadata lives in `app/blog/blog_posts.json`, referencing markdown files in `app/blog/posts/`.
 3. During the build, markdown posts are converted to HTML, headings are harvested for anchor links, and reading-time estimates are calculated.
 4. Output pages land in `dist/` (e.g., `dist/index.html`, `dist/blog/<slug>/index.html`).
-
----
-
-## Repository layout
-
-```text
-.
-├── app/
-│   ├── blog/
-│   │   ├── blog_posts.json    # Blog metadata (slug, tags, markdown path, etc.)
-│   │   └── posts/             # Markdown sources for each blog entry
-│   ├── static/                # CSS, JS, images, resume PDF, favicon script
-│   └── templates/             # Jinja templates and includes
-├── build.py                   # Static site builder
-├── dist/                      # Build output (target for GitHub Pages)
-├── requirements.txt           # Python dependencies for the build
-└── .github/workflows/         # CI that rebuilds and deploys to GitHub Pages
-```
 
 ---
 
@@ -102,6 +91,10 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ## Content & theming workflows
 
+- `app/blog/blog_posts.json` controls post metadata, tags, summaries, and optional social images.
+- `app/static/js/theme-config.js` defines light/dark palettes and accent options.
+- `app/static/js/holiday-shared.js` (paired with `icon-update.js`) stores the holiday schedule and trivia rendered into the site.
+
 ### Add or update pages
 1. Create or edit a template in `app/templates/` (shared fragments live in `app/templates/includes/`).
 2. Register new output paths in the `pages` list inside `build.py` if the template should render to `dist/`.
@@ -110,35 +103,38 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Publish a new blog post
 1. Draft the post in markdown under `app/blog/posts/<slug>.md`.
 2. Add an entry to `app/blog/blog_posts.json` with `slug`, `title`, `date`, `summary`, `content`, `tags`, and optional `updated`.
-3. Run `python build.py` to regenerate metadata and HTML.
+3. Keep the watcher running so the build regenerates automatically (`python build.py` is only necessary for ad-hoc manual runs).
 4. Confirm the post appears at `/blog/<slug>/` and in the blog index card grid.
 
 ### Manage tags
 - Tags are free-form strings in the blog JSON. The build aggregates them to populate filters on `/blog`.
-- To retire a tag, remove it from every post and rebuild.
+- To retire a tag, remove it from every post and let the watcher/CI regenerate the site.
 
 ### Tweak themes and colors
-1. Color definitions live in `app/static/js/theme-config.js`.
-2. Holiday accent mappings are in `app/static/js/holiday-shared.js`.
-3. Update component/page styles in `app/static/css/` to take advantage of new accents.
-4. `app/static/js/theme-init.js` applies the chosen accent/mode at runtime; adjust it if additional logic is needed.
+1. Update accent palettes and mode defaults in `app/static/js/theme-config.js`.
+2. Refresh component/page styles in `app/static/css/` to take advantage of new accents.
+3. `app/static/js/theme-init.js` applies the chosen accent/mode at runtime; adjust it if additional logic is needed.
 
 ### Holiday & seasonal flourishes
-- `HolidaySchedule` (in `holiday-shared.js`) drives emoji, accent, and trivia schedules. Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` to add celebrations.
-- `icon-update.js` regenerates the favicon and writes `app/static/data/holiday-details.json`, which `build.py` uses to render the footer emoji, trivia snippet, and default accent statically.
+- Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` in `app/static/js/holiday-shared.js` to add celebrations.
+- After editing the schedule, run `node app/static/js/icon-update.js` to regenerate the emoji favicon and `app/static/data/holiday-details.json`.
+- `build.py` consumes `holiday-details.json` to render the footer emoji, trivia snippet, and default accent statically.
+
+---
+
+## Generated assets & cache busting
 - `build.py` stamps favicon links with a daily version derived from `holiday-details.json` so browsers refresh the emoji without extra scripts.
 - Every build emits a `static_version` token so CSS/JS/image URLs carry `?v=...` query strings, letting browsers cache assets aggressively between deployments.
 - `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
-- `scripts/convert-images-to-webp.py` - Utility for resizing key assets and generating WebP variants under `static/images/` (use `--overwrite-source` to update the original PNG/JPEG files).
+- Run `python scripts/convert-images-to-webp.py --overwrite-source` after adding or updating images so PNG/JPEG fallbacks are resized and WebP variants stay in sync.
 
 ---
 
 ## Performance checklist
-- Run `python scripts/convert-images-to-webp.py --overwrite-source` after adding or updating images so PNG/JPEG fallbacks are resized and WebP variants stay in sync.
 - Reference images with `<picture>` elements and include explicit `width`/`height` attributes to avoid CLS; use `/static/...` URLs suffixed with `?v={{ static_version }}`.
 - Keep shared CSS/JS references inside `includes/head-assets.html` and `includes/footer-scripts.html` so they automatically receive the cache-busting query string.
 - Spot-check key pages (`index`, `blog`, `projects`, `resume`) with Lighthouse or PageSpeed after major layout or asset changes to ensure no regressions.
-- The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
+- The GitHub Action runs nightly to refresh generated artifacts automatically; mirror those updates locally (see “Generated assets & cache busting”) before pushing sizeable static changes.
 
 ---
 
@@ -161,13 +157,13 @@ The goal of this website is to document its layout and workflows for its owner, 
 - Commits to `main` trigger the “Build and Deploy” GitHub Actions workflow.
 - The job refreshes the favicon, installs Python dependencies, runs `python build.py`, and publishes `dist/` via `actions/deploy-pages`.
 - A scheduled run (`cron: 0 7 * * *`) keeps the public favicon in sync with the current holiday without manual intervention.
-- Rebuild `dist/` before committing to ensure GitHub Pages serves the latest HTML.
+- Ensure the watcher has produced a fresh build in `dist/` before committing; manual rebuilds are only needed for debugging.
 - GitHub Pages serves `dist/404.html` for any unknown route (including `/holiday-trivia`); local static previews typically return the file directly instead of a 404 response, so open `dist/404.html` in a browser to test the not-found experience.
 
 ---
 
 ## Support scripts & notes
 - `build.py` is the single source of truth for derived blog metadata. Keep it updated if you introduce new fields shared between the blog index and individual posts.
-- `scripts/generate-theme-css.js` - Builds the accent class stylesheet from the shared palette during `python build.py`.
+- `scripts/generate-theme-css.js` - Builds the accent class stylesheet from the shared palette whenever the build runs (watcher or CI).
 
 ---
