@@ -111,3 +111,7 @@
 #accent-list .accent-choice.selected {
   transform: scale(0.8);
 }
+
+#accent-list.accent-choice-container {
+  margin-top: 1rem;
+}
