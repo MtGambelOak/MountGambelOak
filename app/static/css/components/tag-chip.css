@@ -1,7 +1,8 @@
 /* Tag pill */
-.tag-chip {
-  background: rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+.tag-chip,
+.tag-chip:visited {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid currentColor;
   border-radius: 999px;
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
@@ -14,22 +15,26 @@
 }
 
 .tag-chip:hover {
-  background: rgba(0, 0, 0, 0.16);
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
   transform: translateY(-1px);
 }
 
-.tag-chip--active {
-  background: var(--accent);
-  color: var(--btn-text);
-  border-color: transparent;
+.tag-chip--active,
+.tag-chip--active:visited {
+  background: color-mix(in srgb, var(--accent-text, var(--accent)) 18%, transparent);
+  color: var(--accent-text, var(--accent));
+  border-color: currentColor;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--accent-text, var(--accent)) 30%, transparent),
+    0 6px 12px color-mix(in srgb, var(--accent-text, var(--accent)) 18%, rgba(0, 0, 0, 0.2));
+  transform: translateY(-1.5px);
 }
 
 .dark .tag-chip {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--accent) 10%, rgba(255, 255, 255, 0.08));
 }
 
 .dark .tag-chip--active {
-  background: var(--accent);
-  color: #000;
+  background: color-mix(in srgb, var(--accent-text, var(--accent)) 20%, rgba(0, 0, 0, 0.2));
+  color: var(--accent-text, var(--accent));
 }

@@ -134,6 +134,7 @@
 .blog-post-header h1 {
   margin: 0;
   font-size: clamp(2rem, 4.5vw, 2.8rem);
+  color: var(--main-text);
 }
 
 .blog-post-date {
@@ -163,6 +164,7 @@
 .blog-post-body h2 {
   margin: 1.5rem 0 0.5rem;
   font-size: 1.5rem;
+  color: var(--main-text);
 }
 
 .blog-post-body ul {

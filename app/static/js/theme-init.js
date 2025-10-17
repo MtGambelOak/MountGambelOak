@@ -307,6 +307,16 @@
       if (targetSrc && img.getAttribute('src') !== targetSrc) {
         img.setAttribute('src', targetSrc);
       }
+
+      const sourceEl = img.closest('picture')?.querySelector('source');
+      if (sourceEl) {
+        const lightSet = sourceEl.dataset.iconLight;
+        const darkSet = sourceEl.dataset.iconDark;
+        const targetSrcset = prefersLightSrc ? lightSet || darkSet : darkSet || lightSet;
+        if (targetSrcset && sourceEl.getAttribute('srcset') !== targetSrcset) {
+          sourceEl.setAttribute('srcset', targetSrcset);
+        }
+      }
     });
   }
 

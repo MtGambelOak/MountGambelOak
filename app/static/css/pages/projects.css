@@ -40,9 +40,9 @@
 
 .project-meta {
   display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
 }
 
 .project-meta h2 {
@@ -63,36 +63,36 @@
 }
 
 .project-status {
-  --status-color: var(--accent);
+  --status-color: var(--accent-text, var(--accent));
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.7rem;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border: 1px solid color-mix(in srgb, var(--status-color) 40%, transparent);
-  background: color-mix(in srgb, var(--status-color) 18%, transparent);
-  color: color-mix(in srgb, var(--status-color) 80%, #0f172a);
+  border: 1px solid var(--status-color);
+  background: color-mix(in srgb, var(--status-color) 15%, transparent);
+  color: var(--status-color);
+  gap: 0.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-status--shipped,
+.project-status--in-progress,
+.project-status--research {
+  --status-color: var(--accent-text, var(--accent));
+}
+
+.project-status:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--status-color) 18%, rgba(0, 0, 0, 0.25));
 }
 
 .dark .project-status {
-  border-color: color-mix(in srgb, var(--status-color) 55%, transparent);
-  background: color-mix(in srgb, var(--status-color) 28%, transparent);
-  color: color-mix(in srgb, var(--status-color) 75%, #e2e8f0);
-}
-
-.project-status--shipped {
-  --status-color: var(--accent);
-}
-
-.project-status--in-progress {
-  --status-color: #c47f23;
-}
-
-.project-status--research {
-  --status-color: #5b6ef5;
+  background: color-mix(in srgb, var(--status-color) 20%, rgba(0, 0, 0, 0.25));
+  color: var(--status-color);
 }
 
 .project-summary {

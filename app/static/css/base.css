@@ -78,6 +78,22 @@ main p {
   line-height: 1.6;
 }
 
+a {
+  color: var(--accent-text, var(--accent));
+  text-decoration-color: color-mix(in srgb, var(--accent-text, var(--accent)) 60%, transparent);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--accent-text, var(--accent)) 80%, var(--mix-dark) 20%);
+  text-decoration-color: currentColor;
+}
+
+a:visited {
+  color: color-mix(in srgb, var(--accent-text, var(--accent)) 75%, var(--mix-dark) 25%);
+  text-decoration-color: color-mix(in srgb, var(--accent-text, var(--accent)) 80%, transparent);
+}
+
 /* Shared raised panel styling */
 .blog-card,
 .blog-placeholder,
@@ -92,6 +108,7 @@ main p {
 .dark .project-card {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
 }
 
 /* Shared typography helpers */
@@ -104,6 +121,7 @@ article p + p {
   color: var(--btn-text);
   padding: var(--btn-padding);
   border-radius: var(--btn-radius);
+  border: 1px solid var(--btn-border, var(--accent));
   text-decoration: none;
   font-weight: 600;
   display: inline-block;
@@ -113,4 +131,5 @@ article p + p {
 
 .btn:hover {
   background: var(--btn-hover);
+  border-color: var(--btn-border-hover, var(--accent));
 }

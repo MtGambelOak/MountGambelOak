@@ -8,9 +8,9 @@
   padding: 0.3rem 0.8rem;
   font-size: 0.9rem;
   border-radius: 6px;
-  border: none;
-  background: var(--btn-bg);
-  color: var(--btn-text);
+  border: 1px solid color-mix(in srgb, var(--accent) 60%, var(--mix-dark) 20%);
+  background: var(--accent);
+  color: var(--header-text);
   cursor: pointer;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   white-space: nowrap;
@@ -18,7 +18,7 @@
 }
 
 #theme-config-btn:hover {
-  background-color: var(--btn-hover);
+  background-color: color-mix(in srgb, var(--accent) 85%, var(--mix-light) 15%);
 }
 
 #theme-config-popup {
