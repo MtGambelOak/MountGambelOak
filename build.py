@@ -54,7 +54,7 @@ if os.path.exists(BLOG_POSTS_FILE):
 # Holiday details
 DEFAULT_HOLIDAY_DETAILS = {
     "emoji": "🗻",
-    "accent": "forest",
+    "accent": "sage",
     "title": "Seasonal Snapshot",
     "fact": "Something went horribly wrong!",
 }
