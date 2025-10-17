@@ -129,7 +129,24 @@ The goal of this website is to document its layout and workflows for its owner, 
 - `build.py` stamps favicon links with a daily version derived from `holiday-details.json` so browsers refresh the emoji without extra scripts.
 - Every build emits a `static_version` token so CSS/JS/image URLs carry `?v=...` query strings, letting browsers cache assets aggressively between deployments.
 - `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
+- `scripts/convert-images-to-webp.py` - Utility for resizing key assets and generating WebP variants under `static/images/` (use `--overwrite-source` to update the original PNG/JPEG files).
+
+---
+
+## Performance checklist
+- Run `python scripts/convert-images-to-webp.py --overwrite-source` after adding or updating images so PNG/JPEG fallbacks are resized and WebP variants stay in sync.
+- Reference images with `<picture>` elements and include explicit `width`/`height` attributes to avoid CLS; use `/static/...` URLs suffixed with `?v={{ static_version }}`.
+- Keep shared CSS/JS references inside `includes/head-assets.html` and `includes/footer-scripts.html` so they automatically receive the cache-busting query string.
+- Spot-check key pages (`index`, `blog`, `projects`, `resume`) with Lighthouse or PageSpeed after major layout or asset changes to ensure no regressions.
 - The GitHub Action runs nightly to refresh those generated artifacts automatically; run the script locally to stay in sync during development.
+
+---
+
+## Responsive design notes
+- Layouts are mobile-first: base styles assume a single-column flow and scale up via `@media (min-width: …)` rules in each page/component stylesheet (e.g., `home.css`, `projects.css`).
+- The site header collapses into a toggleable menu when space runs out; `header-menu.js` measures the layout with `ResizeObserver`/`requestAnimationFrame` so the nav only collapses when necessary.
+- Blog/project grids rely on CSS Grid `auto-fit` patterns so cards wrap cleanly across breakpoints without extra scripting.
+- Typography and spacing make use of `clamp()` and responsive units where needed to keep text comfortable on phones and widescreens.
 
 ---
 
