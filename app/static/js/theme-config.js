@@ -43,7 +43,7 @@
     storageKeys,
     accentPalette,
     defaultMode: 'system',
-    defaultAccent: 'holiday',
+    defaultAccent: 'sage',
     defaultCustomAccent: 'sage',
     iconLightAccents,
   });

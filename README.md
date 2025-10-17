@@ -130,6 +130,17 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ---
 
+## Accent mixins guide
+- Accent-aware colors come from `app/static/js/theme-config.js`. Each accent can specify `color`, optional `mixDark`/`mixLight` overrides, and a `iconTone` flag that tells the footer icons which asset to use.
+- CSS should prefer vars that already blend based on the accent:
+  - Use `var(--accent)` for pure accent fills, `var(--accent-text)` for readable text/borders, and `color-mix` with those vars for translucent backgrounds.
+  - Buttons and tag chips expect `var(--btn-border)`/`var(--btn-text)`/`var(--btn-bg)` (set in `theme.css`).
+- When you need a new element that reacts to accent, add the derived property in `theme.css` (e.g., `--badge-bg`, `--badge-border`) so light/dark math is centralized.
+- Footer icon swapping relies on `data-icon-light` / `data-icon-dark` attributes (WebP + PNG) and `iconLightAccents` from the theme config; make sure new icons follow the same structure.
+- For example - white accent on light theme would often result in white on white unreadable text, so we take care to mix in dark with the accent color to make it readable. Same goes for ivory accent on light theme, and black accent on dark theme.
+
+---
+
 ## Performance checklist
 - Reference images with `<picture>` elements and include explicit `width`/`height` attributes to avoid CLS; use `/static/...` URLs suffixed with `?v={{ static_version }}`.
 - Keep shared CSS/JS references inside `includes/head-assets.html` and `includes/footer-scripts.html` so they automatically receive the cache-busting query string.
