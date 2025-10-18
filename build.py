@@ -20,6 +20,7 @@ WORDS_PER_MINUTE = 200
 DEFAULT_SITE_BASE_URL = "https://mountgambeloak.dev"
 SITE_BASE_URL = os.environ.get("SITE_BASE_URL", DEFAULT_SITE_BASE_URL).rstrip("/") or DEFAULT_SITE_BASE_URL
 SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9"
+REPO_ROOT = Path(__file__).resolve().parent
 BLOG_POSTS = []
 if os.path.exists(BLOG_POSTS_FILE):
     with open(BLOG_POSTS_FILE, "r", encoding="utf-8") as f:
@@ -92,6 +93,61 @@ FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
 STATIC_VERSION = BUILD_TIME.strftime("%Y%m%d%H%M%S")
 CURRENT_YEAR = BUILD_TIME.year
 BUILD_DATE = BUILD_TIME.date().isoformat()
+
+
+def get_git_last_modified_timestamp(paths) -> Optional[str]:
+    if isinstance(paths, (str, Path)):
+        candidates = [paths]
+    else:
+        candidates = [*paths]
+    normalized = []
+    for candidate in candidates:
+        if not candidate:
+            continue
+        candidate_path = Path(candidate)
+        if not candidate_path.is_absolute():
+            candidate_path = REPO_ROOT / candidate_path
+        if not candidate_path.exists():
+            continue
+        try:
+            relative_path = candidate_path.relative_to(REPO_ROOT)
+            normalized.append(str(relative_path))
+        except ValueError:
+            normalized.append(str(candidate_path))
+    if not normalized:
+        return None
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(REPO_ROOT), "log", "-1", "--format=%cI", "--", *normalized],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            check=True,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+    timestamp = result.stdout.strip()
+    return timestamp or None
+
+
+def normalize_lastmod(value) -> Optional[str]:
+    if not value:
+        return None
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if hasattr(value, "isoformat"):
+        try:
+            return value.isoformat()
+        except TypeError:
+            pass
+    if isinstance(value, str):
+        sanitized = value.replace("Z", "+00:00")
+        try:
+            parsed = datetime.fromisoformat(sanitized)
+        except ValueError:
+            return value
+        return parsed.date().isoformat()
+    return value
 
 
 # Generate accent CSS before copying assets
@@ -231,7 +287,12 @@ for template_name, output_path, include_in_sitemap in pages:
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
     if include_in_sitemap:
-        add_sitemap_entry(sitemap_entries, output_path, BUILD_DATE)
+        page_sources = [Path(TEMPLATES) / template_name]
+        if template_name in {"index.html", "blog.html"}:
+            page_sources.append(BLOG_POSTS_FILE)
+        raw_page_lastmod = get_git_last_modified_timestamp(page_sources) or BUILD_DATE
+        page_lastmod = normalize_lastmod(raw_page_lastmod)
+        add_sitemap_entry(sitemap_entries, output_path, page_lastmod)
 
 # Render blog posts
 post_template = env.get_template("blog/post.html")
@@ -254,7 +315,17 @@ if BLOG_POSTS:
         with open(dest, "w", encoding="utf-8") as f:
             f.write(html)
         post_output_path = os.path.join("blog", slug, "index.html")
-        post_lastmod = post.get("updated") or post.get("date") or BUILD_DATE
+        post_sources = []
+        content_path = post.get("content")
+        if content_path:
+            post_sources.append(Path(SRC_DIR) / content_path)
+        raw_post_lastmod = (
+            post.get("updated")
+            or get_git_last_modified_timestamp(post_sources)
+            or post.get("date")
+            or BUILD_DATE
+        )
+        post_lastmod = normalize_lastmod(raw_post_lastmod)
         add_sitemap_entry(sitemap_entries, post_output_path, post_lastmod)
 
 write_sitemap(sitemap_entries)
