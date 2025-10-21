@@ -32,11 +32,9 @@ This isn't meant to rag on these ideas. I think while they have issues on their 
 
 On top of that, there have been rumors of YouTube starting to burn advertisements directly into the video streams to try and stop AdBlock users. Honestly, at that point I would probably just stop using YouTube. But a more robust approach to blocking ads could be useful in that area if the change is ever made. In the end, I just find this an interesting problem to approach, and want to learn more about Machine Learning, and this project provides a perfect opportunity to do so.
 
-## The solution: AI (oh boy is it buzzword time?)
+## The solution: AI (I promise it makes sense to use it here!)
 
-Yes, I'm sorry, but it's time to go *there*. It seems like AI is everywhere nowadays, because it is. At this point, people just seem to add "AI" to everything and call it a day before raking in millions from investors. Many people have soured on it as a whole due to admittedly obnoxious marketing, not to mention its adverse effects on the environment and vulnerable communities.
-
-That being said, I find AI to be utterly captivating from an intellectual side of things. I think it has great potential to improve the world if used in a positive capacity. In my opinion, using AI to block ads is a positive application of technology.
+Yes, I'm sorry, but it's time to go *there*. But, I think it's relevant to the solution here!
 
 To cut through the buzzwords, I essentially propose this. We take a live broadcast stream, and extract real-time information from it. What do I mean by "information"? Basically, anything we think is relevant to a certain portion of the broadcast being an advertisement vs content. This is going to be things like the audio, or for simplicity's sake, a transcription of the broadcast using open-source STT software. This will also include visual information from the broadcast, such as periodic screenshots. It's also definitely possible to include some of the ideas explored in the "simpler" approaches outlined earlier; logo or scoreboard detection, and scoreboard APIs in the case of live sports broadcasts.
 
