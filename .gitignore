@@ -10,3 +10,5 @@ scripts/
 # Generated assets
 app/static/css/generated/
 app/static/data/
+
+git-pull.log
