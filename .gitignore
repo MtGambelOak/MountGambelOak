@@ -10,5 +10,6 @@ scripts/
 # Generated assets
 app/static/css/generated/
 app/static/data/
+app/static/images/favicon.svg
 
 git-pull.log
