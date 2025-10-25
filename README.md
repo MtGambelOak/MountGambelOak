@@ -117,7 +117,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 ### Holiday & seasonal flourishes
 - Extend `HOLIDAY_RANGES` or `HOLIDAY_FACTS` in `app/static/js/holiday-shared.js` to add celebrations.
 - After editing the schedule, run `node app/static/js/icon-update.js` to regenerate the emoji favicon and `app/static/data/holiday-details.json`.
-- `build.py` consumes `holiday-details.json` to render the footer emoji, trivia snippet, and default accent statically.
+- `build.py` consumes `holiday-details.json` to render the footer emoji, trivia snippet, and default accent statically. The JSON also exposes the resolved `accentColor` hex for external consumers (e.g., bots).
 
 ---
 

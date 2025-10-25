@@ -5,14 +5,40 @@
     root.HolidaySchedule = factory();
   }
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  const ACCENT_PALETTE = (() => {
+    if (typeof module === 'object' && module.exports) {
+      try {
+        const themeConfig = require('./theme-config');
+        if (themeConfig && themeConfig.accentPalette) {
+          return themeConfig.accentPalette;
+        }
+      } catch (err) {
+        // ignore; fall back to empty palette
+      }
+    }
+    if (typeof globalThis !== 'undefined' && globalThis.ThemeConfig && globalThis.ThemeConfig.accentPalette) {
+      return globalThis.ThemeConfig.accentPalette;
+    }
+    return {};
+  })();
+
+  const FALLBACK_ACCENT_COLOR = '#5A7A39'; // sage
+
+  function resolveAccentColor(accentName) {
+    if (!accentName) return FALLBACK_ACCENT_COLOR;
+    const record = ACCENT_PALETTE[accentName];
+    if (record && record.color) return record.color;
+    return FALLBACK_ACCENT_COLOR;
+  }
+
   const HOLIDAY_RANGES = [
-    { name: 'newyear',         start: '01-01', end: '01-04', emoji: '🎊' },
+    { name: 'newyears',        start: '01-01', end: '01-04', emoji: '🎊' },
     { name: 'mlkday',          nthWeekday: { month: 1, weekday: 1, nth: 3 }, emoji: '📜' },
     { name: 'valentine',       start: '02-14', end: '02-14', emoji: '💌' },
     { name: 'superbowl',       nthWeekday: { month: 2, weekday: 0, nth: 2 }, emoji: '🏈' },
     { name: 'leapday',         start: '02-29', end: '02-29', emoji: '🐸' },
     { name: 'piday',           start: '03-14', end: '03-14', emoji: '🥧' },
-    { name: 'stpatricks',      start: '03-17', end: '03-17', emoji: '☘️' },
+    { name: 'stpatricksday',   start: '03-17', end: '03-17', emoji: '☘️' },
     { name: 'marchmadness',    emoji: '🏀' },
     { name: 'springequinox',   start: '03-20', end: '03-20', emoji: '🌅' },
     { name: 'aprilfools',      start: '04-01', end: '04-01', emoji: '🎭' },
@@ -31,7 +57,7 @@
     { name: 'holidays',        start: '12-10', end: '12-23', emoji: '🎄' },
     { name: 'christmaseve',    start: '12-24', end: '12-24', emoji: '🎅' },
     { name: 'christmas',       start: '12-25', end: '12-25', emoji: '🎁' },
-    { name: 'afterxmas',       start: '12-26', end: '12-30', emoji: '🪾' },
+    { name: 'boxingweek',      start: '12-26', end: '12-30', emoji: '🪾' },
     { name: 'newyearseve',     start: '12-31', end: '12-31', emoji: '🪩' },
   ];
 
@@ -156,13 +182,13 @@
 
   // === Namespaced accent mappings ===
   const HOLIDAY_ACCENTS = {
-    newyear:        'goldenrod',
+    newyears:       'goldenrod',
     mlkday:         'brown',
     valentine:      'pink',
     superbowl:      'forest',
     leapday:        'sage',
     piday:          'salmon',
-    stpatricks:     'sage',
+    stpatricksday:  'sage',
     marchmadness:   'orange',
     springequinox:  'olive',
     aprilfools:     'purple',
@@ -181,7 +207,7 @@
     holidays:       'forest',
     christmaseve:   'red',
     christmas:      'red',
-    afterxmas:      'black',
+    boxingweek:     'black',
     newyearseve:    'gray',
   };
 
@@ -191,13 +217,13 @@
   ];
 
   const HOLIDAY_FACTS = {
-    newyear: { title: "New Year's", fact: "The new year stretches out before you, brimming with possibility. Only about 8% of people keep their New Year's resolutions until the next; but remember, change starts with habits." },
+    newyears: { title: "New Year's", fact: "The new year stretches out before you, brimming with possibility. Only about 8% of people keep their New Year's resolutions until the next; but remember, change starts with habits." },
     mlkday: { title: "Martin Luther King Jr. Day", fact: "MLK Day is the only federal holiday designated as a national day of service—reminding us to show up for our communities." },
     valentine: { title: "Valentine's Day", fact: "Around 30% of adults in the US aren't in a relationship. So if you find yourself alone on Valentine's Day, remember there's plenty of fish in the lonely sea." },
     superbowl: { title: "Super Bowl", fact: "Legend has it that even the Zebras can't save Patty Cakes in every Super Bowl." },
     leapday: { title: "Leap Day", fact: "If you're born on a Leap Day, some jurisdictions don't consider your birthday (in terms of age) until March 1st if it's not a Leap Year." },
     piday: { title: "Pi Day", fact: "Nerds around the world celebrate. And possibly, foodies who aren't good with math." },
-    stpatricks: { title: "St. Patrick's Day", fact: "Legend says the Shamrock represents the Holy Trinity. But one thing we can all agree on is that you better be wearing green!" },
+    stpatricksday: { title: "St. Patrick's Day", fact: "Legend says the Shamrock represents the Holy Trinity. But one thing we can all agree on is that you better be wearing green!" },
     marchmadness: { title: "March Madness", fact: "A perfect bracket still hasn't been accomplished, with the record standing at the first 49 games predicted correctly. It remains to be seen if it will ever be done, but one thing that is clear is to never bet on Gonzaga." },
     springequinox: { title: "Spring Equinox", fact: "The specific date actually changes from year to year, but it's often around the 21st. Be sure to soak up the extra sun!" },
     aprilfools: { title: "April Fools' Day", fact: "If you're going to pull a prank today, try and make sure it's not at anyone's expense. True fools are the ones who upset others for a cheap laugh." },
@@ -216,7 +242,7 @@
     holidays: { title: "Holiday Season", fact: "It's time to deck the halls! Despite the dark days, nights stay lit up with color." },
     christmaseve: { title: "Christmas Eve", fact: "After the family gets together, children dream of sugarplums in anticipation of the morning." },
     christmas: { title: "Christmas Day", fact: "A day of family, celebration, and coziness. It's finally here!" },
-    afterxmas: { title: "Boxing Week", fact: "Some countries celebrate Boxing Day right after Christmas, or even extend it until New Year's Eve. This time of year feels sluggish and ethereal, a time many have off to recover from the holidays." },
+    boxingweek: { title: "Boxing Week", fact: "Some countries celebrate Boxing Day right after Christmas, or even extend it until New Year's Eve. This time of year feels sluggish and ethereal, a time many have off to recover from the holidays." },
     newyearseve: { title: "New Year's Eve", fact: "The holidays offer one last gasp, as people celebrate a year that was hopefully a success, or turn their eyes to making the next something to write home about." },
     month_0: { title: 'January', fact: 'In the peak of winter, the landscape is covered in snow. Some may find it boring, some may find it peaceful.' },
     month_1: { title: 'February', fact: 'As the winter drags on, find comfort in quiet, cozy evenings.' },
@@ -243,11 +269,13 @@
       const emoji = match.holiday.emoji;
       const accent = HOLIDAY_ACCENTS[name] || MONTH_ACCENTS[monthIndex];
       const facts = HOLIDAY_FACTS[name] || HOLIDAY_FACTS.default;
+      const accentColor = resolveAccentColor(accent);
       return {
         generatedAt: normalized.toISOString(),
         name,
         emoji,
         accent,
+        accentColor,
         title: facts.title,
         fact: facts.fact,
       };
@@ -255,11 +283,14 @@
 
     const fallbackKey = `month_${monthIndex}`;
     const facts = HOLIDAY_FACTS[fallbackKey] || HOLIDAY_FACTS.default;
+    const accent = MONTH_ACCENTS[monthIndex];
+    const accentColor = resolveAccentColor(accent);
     return {
       generatedAt: normalized.toISOString(),
       name: null,
       emoji: MONTHLY_FALLBACKS[monthIndex],
-      accent: MONTH_ACCENTS[monthIndex],
+      accent,
+      accentColor,
       title: facts.title,
       fact: facts.fact,
     };
@@ -286,6 +317,7 @@
     getHolidayAccent,
     getActiveHolidayDetails,
     resolveHoliday,
+    resolveAccentColor,
     utils: {
       dateInRange,
       isEaster,
