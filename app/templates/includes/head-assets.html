@@ -3,12 +3,15 @@
     window.__HOLIDAY_DETAILS__ = {{ holiday_details | tojson }};
   </script>
   {% endif %}
+  <script
+    src="/static/js/favicon-upgrade.js?v={{ static_version }}"
+    data-svg-favicon="/static/images/favicon.svg?v={{ favicon_version | default('1') }}"
+  ></script>
   <script src="/static/js/theme-config.js?v={{ static_version }}"></script>
   <script src="/static/js/theme-preload.js?v={{ static_version }}"></script>
   <script defer src="/static/js/theme-init.js?v={{ static_version }}"></script>
-  <link rel="icon" href="/static/images/favicon.svg?v={{ favicon_version | default('1') }}" type="image/svg+xml" sizes="any" />
-  <link rel="icon" href="/static/images/default.ico?v={{ favicon_version | default('1') }}" type="image/x-icon" />
-  <link rel="shortcut icon" href="/static/images/default.ico?v={{ favicon_version | default('1') }}" type="image/x-icon" />
+  <link rel="icon" href="/static/images/default.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/static/images/default.ico" type="image/x-icon" />
   <link rel="stylesheet" href="/static/css/base.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/theme.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/generated/theme-accents.css?v={{ static_version }}" />
