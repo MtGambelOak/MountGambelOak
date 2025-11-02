@@ -61,7 +61,7 @@
     { name: 'newyearseve',     start: '12-31', end: '12-31', emoji: '🪩' },
   ];
 
-  const MONTHLY_FALLBACKS = ['🗻', '🌨️', '🍃', '🌷', '🐝', '🌳', '🌞', '🌻', '🪵', '🍂', '🍁', '🌲'];
+  const MONTHLY_FALLBACKS = ['🗻', '🌨️', '🍃', '🌷', '🐝', '🌳', '🌞', '🌻', '🪵', '🍂', '🍠', '🌲'];
 
   function parseMonthDay(md) {
     const [month, day] = md.split('-').map(Number);
