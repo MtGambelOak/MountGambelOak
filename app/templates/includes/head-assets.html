@@ -4,11 +4,12 @@
   </script>
   {% endif %}
   <script
+    defer
     src="/static/js/favicon-upgrade.js?v={{ static_version }}"
     data-svg-favicon="/static/images/favicon.svg?v={{ favicon_version | default('1') }}"
   ></script>
-  <script src="/static/js/theme-config.js?v={{ static_version }}"></script>
-  <script src="/static/js/theme-preload.js?v={{ static_version }}"></script>
+  <script>{{ inline_asset("app/static/js/theme-config.js") }}</script>
+  <script>{{ inline_asset("app/static/js/theme-preload.js") }}</script>
   <script defer src="/static/js/theme-init.js?v={{ static_version }}"></script>
   <link rel="icon" href="/static/images/default.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="/static/images/default.ico" type="image/x-icon" />

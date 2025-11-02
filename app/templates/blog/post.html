@@ -6,11 +6,15 @@
     {% if post.headings %}
     <aside class="post-outline" aria-label="Section navigation">
       <p class="post-outline-title">On this page</p>
-      <ol>
-        {% for heading in post.headings %}
-        <li><a href="#{{ heading.id }}" data-heading-id="{{ heading.id }}">{{ heading.title }}</a></li>
-        {% endfor %}
-      </ol>
+      <div class="post-outline-list">
+        <ol>
+          {% for heading in post.headings %}
+          <li><a href="#{{ heading.id }}" data-heading-id="{{ heading.id }}">{{ heading.title }}</a></li>
+          {% endfor %}
+        </ol>
+        <div class="post-outline-track" aria-hidden="true"></div>
+        <div class="post-outline-indicator" aria-hidden="true"></div>
+      </div>
     </aside>
     {% endif %}
 

@@ -7,6 +7,7 @@ from pathlib import Path
 from xml.etree.ElementTree import Element, ElementTree, SubElement
 from typing import Optional
 from jinja2 import Environment, FileSystemLoader
+from markupsafe import Markup
 import markdown
 
 SRC_DIR = "app"
@@ -101,6 +102,23 @@ FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
 STATIC_VERSION = BUILD_TIME.strftime("%Y%m%d%H%M%S")
 CURRENT_YEAR = BUILD_TIME.year
 BUILD_DATE = BUILD_TIME.date().isoformat()
+
+
+_INLINE_CACHE: dict[Path, Markup] = {}
+
+
+def inline_asset(relative_path: str) -> Markup:
+    asset_path = (REPO_ROOT / relative_path).resolve()
+    try:
+        return _INLINE_CACHE[asset_path]
+    except KeyError:
+        try:
+            content = asset_path.read_text(encoding="utf-8")
+        except FileNotFoundError as err:
+            raise RuntimeError(f"Inline asset not found: {relative_path}") from err
+        markup = Markup(content)
+        _INLINE_CACHE[asset_path] = markup
+        return markup
 
 
 def get_git_last_modified_timestamp(paths) -> Optional[str]:
@@ -214,6 +232,7 @@ env.globals["favicon_version"] = FAVICON_VERSION
 env.globals["current_year"] = CURRENT_YEAR
 env.globals["static_version"] = STATIC_VERSION
 env.globals["site_base_url"] = SITE_BASE_URL
+env.globals["inline_asset"] = inline_asset
 
 # Render each template
 # (template name, output path, include in sitemap)

@@ -11,6 +11,32 @@
   var list = outline.querySelector('ol');
   if (!list) return;
 
+  var listWrapper = outline.querySelector('.post-outline-list');
+  if (!listWrapper) {
+    listWrapper = document.createElement('div');
+    listWrapper.className = 'post-outline-list';
+    outline.insertBefore(listWrapper, list);
+  }
+  if (!listWrapper.contains(list)) {
+    listWrapper.appendChild(list);
+  }
+
+  var track = listWrapper.querySelector('.post-outline-track');
+  if (!track) {
+    track = document.createElement('div');
+    track.className = 'post-outline-track';
+    track.setAttribute('aria-hidden', 'true');
+    listWrapper.appendChild(track);
+  }
+
+  var indicator = listWrapper.querySelector('.post-outline-indicator');
+  if (!indicator) {
+    indicator = document.createElement('div');
+    indicator.className = 'post-outline-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    listWrapper.appendChild(indicator);
+  }
+
   // attach IDs to headings
   var headingNodes = Array.from(article.querySelectorAll('h2'));
   headingsData.forEach(function (item, index) {
@@ -20,21 +46,6 @@
 
   var links = Array.from(outline.querySelectorAll('a[data-heading-id]'));
   if (!links.length) return;
-
-  // build indicator scaffold
-  var listWrapper = document.createElement('div');
-  listWrapper.className = 'post-outline-list';
-  outline.insertBefore(listWrapper, list);
-  listWrapper.appendChild(list);
-
-  var track = document.createElement('div');
-  track.className = 'post-outline-track';
-  track.setAttribute('aria-hidden', 'true');
-  var indicator = document.createElement('div');
-  indicator.className = 'post-outline-indicator';
-  indicator.setAttribute('aria-hidden', 'true');
-  listWrapper.appendChild(track);
-  listWrapper.appendChild(indicator);
 
   function setActive(id) {
     links.forEach(function (link) {
