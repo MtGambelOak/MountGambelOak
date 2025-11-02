@@ -125,6 +125,7 @@ The goal of this website is to document its layout and workflows for its owner, 
 - Every build emits a `static_version` token so CSS/JS/image URLs carry `?v=...` query strings, letting browsers cache assets aggressively between deployments.
 - `scripts/generate-theme-css.js` emits `static/css/generated/theme-accents.css` so accent classes stay in sync with the theme palette.
 - Run `python scripts/convert-images-to-webp.py --overwrite-source` after adding or updating images so PNG/JPEG fallbacks are resized and WebP variants stay in sync.
+- New icons or badges need resize targets registered in `scripts/convert-images-to-webp.py` (`RESIZE_TARGETS` map) before running the script so the generated WebP/PNG assets match their on-page display size.
 
 ---
 
