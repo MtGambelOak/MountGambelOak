@@ -84,9 +84,17 @@ BUILD_TIME = datetime.now(UTC)
 def resolve_favicon_version(details):
     stamp = details.get("generatedAt")
     if isinstance(stamp, str) and stamp:
-        date_part = stamp.split("T", 1)[0]
-        return date_part.replace("-", "")
-    return BUILD_TIME.strftime("%Y%m%d")
+        try:
+            normalized = stamp.replace("Z", "+00:00")
+            parsed = datetime.fromisoformat(normalized)
+        except ValueError:
+            date_part = stamp.split("T", 1)[0]
+            digits = date_part.replace("-", "")
+            if digits:
+                return digits
+        else:
+            return parsed.strftime("%Y%m%d%H%M%S")
+    return BUILD_TIME.strftime("%Y%m%d%H%M%S")
 
 
 FAVICON_VERSION = resolve_favicon_version(HOLIDAY_DETAILS)
