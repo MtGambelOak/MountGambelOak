@@ -51,7 +51,7 @@
     { name: 'perseids',        start: '08-11', end: '08-13', emoji: '🌠' },
     { name: 'laborday',        nthWeekday: { month: 9, weekday: 1, nth: 1 }, emoji: '💪' },
     { name: 'fallequinox',     start: '09-21', end: '09-21', emoji: '🌇' },
-    { name: 'halloween',       start: '10-25', end: '10-31', emoji: '🎃' },
+    { name: 'halloween',       start: '10-25', end: '11-03', emoji: '🎃' },
     { name: 'thanksgivingUS',  nthWeekday: { month: 11, weekday: 4, nth: 4 }, bufferBefore: 3, bufferAfter: 3, emoji: '🦃' },
     { name: 'wintersolstice',  start: '12-21', end: '12-21', emoji: '❄️' },
     { name: 'holidays',        start: '12-10', end: '12-23', emoji: '🎄' },
