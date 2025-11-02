@@ -107,7 +107,6 @@ The goal of this website is to document its layout and workflows for its owner, 
 
 ### Manage tags
 - Tags are free-form strings in the blog JSON. The build aggregates them to populate filters on `/blog`.
-- To retire a tag, remove it from every post and let the watcher/CI regenerate the site.
 
 ### Tweak themes and colors
 1. Update accent palettes and mode defaults in `app/static/js/theme-config.js`.
