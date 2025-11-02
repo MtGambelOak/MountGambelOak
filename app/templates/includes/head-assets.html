@@ -10,12 +10,8 @@
   ></script>
   <script>{{ inline_asset("app/static/js/theme-config.js") }}</script>
   <script>{{ inline_asset("app/static/js/theme-preload.js") }}</script>
-  <script defer src="/static/js/theme-init.js?v={{ static_version }}"></script>
   <link rel="icon" href="/static/images/default.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="/static/images/default.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="/static/css/base.css?v={{ static_version }}" />
-  <link rel="stylesheet" href="/static/css/theme.css?v={{ static_version }}" />
-  <link rel="stylesheet" href="/static/css/generated/theme-accents.css?v={{ static_version }}" />
-  <link rel="stylesheet" href="/static/css/components/header.css?v={{ static_version }}" />
-  <link rel="stylesheet" href="/static/css/components/footer.css?v={{ static_version }}" />
-  <link rel="stylesheet" href="/static/css/theme-widget.css?v={{ static_version }}" />
+  {% if page_css_bundle %}
+  <link rel="stylesheet" href="{{ page_css_bundle }}" />
+  {% endif %}

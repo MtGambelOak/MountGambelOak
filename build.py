@@ -2,10 +2,11 @@ import json
 import os
 import shutil
 import subprocess
+import hashlib
 from datetime import UTC, datetime
 from pathlib import Path
 from xml.etree.ElementTree import Element, ElementTree, SubElement
-from typing import Optional
+from typing import Optional, List
 from jinja2 import Environment, FileSystemLoader
 from markupsafe import Markup
 import markdown
@@ -103,6 +104,72 @@ STATIC_VERSION = BUILD_TIME.strftime("%Y%m%d%H%M%S")
 CURRENT_YEAR = BUILD_TIME.year
 BUILD_DATE = BUILD_TIME.date().isoformat()
 
+COMMON_CSS_FILES: List[Path] = [
+    Path("app/static/css/base.css"),
+    Path("app/static/css/theme.css"),
+    Path("app/static/css/generated/theme-accents.css"),
+    Path("app/static/css/components/header.css"),
+    Path("app/static/css/components/footer.css"),
+    Path("app/static/css/theme-widget.css"),
+]
+
+COMMON_JS_FILES: List[Path] = [
+    Path("app/static/js/theme-init.js"),
+    Path("app/static/js/theme-widget.js"),
+]
+
+PAGE_ASSETS = {
+    "index": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/components/blog-card.css"),
+            Path("app/static/css/components/tag-chip.css"),
+            Path("app/static/css/pages/home.css"),
+        ],
+        "js": list(COMMON_JS_FILES),
+    },
+    "blog": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/components/blog-card.css"),
+            Path("app/static/css/components/tag-chip.css"),
+            Path("app/static/css/pages/blog.css"),
+        ],
+        "js": COMMON_JS_FILES + [
+            Path("app/static/js/blog-tags.js"),
+        ],
+    },
+    "projects": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/pages/projects.css"),
+        ],
+        "js": list(COMMON_JS_FILES),
+    },
+    "resume": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/pages/resume.css"),
+        ],
+        "js": list(COMMON_JS_FILES),
+    },
+    "not_found": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/pages/not-found.css"),
+        ],
+        "js": list(COMMON_JS_FILES),
+    },
+    "blog_post": {
+        "css": COMMON_CSS_FILES + [
+            Path("app/static/css/components/tag-chip.css"),
+            Path("app/static/css/pages/blog-post.css"),
+        ],
+        "js": COMMON_JS_FILES + [
+            Path("app/static/js/post-sections.js"),
+        ],
+    },
+}
+
+BUNDLE_RELATIVE_DIR = Path("static/bundles")
+CSS_BUNDLE_CACHE: dict[str, str] = {}
+JS_BUNDLE_CACHE: dict[str, str] = {}
+
 
 _INLINE_CACHE: dict[Path, Markup] = {}
 
@@ -119,6 +186,49 @@ def inline_asset(relative_path: str) -> Markup:
         markup = Markup(content)
         _INLINE_CACHE[asset_path] = markup
         return markup
+
+
+def ensure_bundle_directory() -> Path:
+    bundle_dir = REPO_ROOT / DIST / BUNDLE_RELATIVE_DIR
+    bundle_dir.mkdir(parents=True, exist_ok=True)
+    return bundle_dir
+
+
+def read_asset_text(asset_path: Path) -> str:
+    resolved = (REPO_ROOT / asset_path).resolve()
+    try:
+        return resolved.read_text(encoding="utf-8")
+    except FileNotFoundError as err:
+        raise RuntimeError(f"Asset not found for bundling: {asset_path}") from err
+
+
+def build_bundle(name: str, files: List[Path], cache: dict[str, str], extension: str) -> Optional[str]:
+    if not files:
+        return None
+    if name in cache:
+        return cache[name]
+
+    bundle_dir = ensure_bundle_directory()
+    parts = []
+    for path in files:
+        parts.append(f"/* {path.as_posix()} */\n{read_asset_text(path)}")
+    combined = "\n\n".join(parts)
+    digest = hashlib.sha256(combined.encode("utf-8")).hexdigest()[:10]
+    filename = f"{name}-{digest}{extension}"
+    destination = bundle_dir / filename
+    destination.write_text(combined, encoding="utf-8")
+    url_path = "/" + (BUNDLE_RELATIVE_DIR / filename).as_posix()
+    cache[name] = url_path
+    return url_path
+
+
+def resolve_page_bundles(page_key: str) -> tuple[Optional[str], Optional[str]]:
+    assets = PAGE_ASSETS.get(page_key)
+    if not assets:
+        raise RuntimeError(f"No asset bundle configuration for page key '{page_key}'")
+    css_bundle = build_bundle(f"{page_key}-styles", assets.get("css", []), CSS_BUNDLE_CACHE, ".css")
+    js_bundle = build_bundle(f"{page_key}-scripts", assets.get("js", []), JS_BUNDLE_CACHE, ".js")
+    return css_bundle, js_bundle
 
 
 def get_git_last_modified_timestamp(paths) -> Optional[str]:
@@ -237,11 +347,11 @@ env.globals["inline_asset"] = inline_asset
 # Render each template
 # (template name, output path, include in sitemap)
 pages = [
-    ("index.html", "index.html", True),
-    ("404.html", "404.html", False),
-    ("blog.html", os.path.join("blog", "index.html"), True),
-    ("projects.html", os.path.join("projects", "index.html"), True),
-    ("resume.html", os.path.join("resume", "index.html"), True),
+    ("index.html", "index.html", True, "index"),
+    ("404.html", "404.html", False, "not_found"),
+    ("blog.html", os.path.join("blog", "index.html"), True, "blog"),
+    ("projects.html", os.path.join("projects", "index.html"), True, "projects"),
+    ("resume.html", os.path.join("resume", "index.html"), True, "resume"),
 ]
 
 
@@ -296,7 +406,7 @@ def write_robots_txt() -> None:
 
 sitemap_entries = []
 
-for template_name, output_path, include_in_sitemap in pages:
+for template_name, output_path, include_in_sitemap, asset_key in pages:
     tpl = env.get_template(template_name)
     context = {}
     if template_name == "blog.html":
@@ -304,6 +414,9 @@ for template_name, output_path, include_in_sitemap in pages:
         context["all_tags"] = sorted({tag for post in BLOG_POSTS for tag in post.get("tags", [])})
     elif template_name == "index.html":
         context["latest_post"] = BLOG_POSTS[0] if BLOG_POSTS else None
+    css_bundle, js_bundle = resolve_page_bundles(asset_key)
+    context["page_css_bundle"] = css_bundle
+    context["page_js_bundle"] = js_bundle
     html = tpl.render(**context)
 
     dest = os.path.join(DIST, output_path)
@@ -325,6 +438,7 @@ for template_name, output_path, include_in_sitemap in pages:
 post_template = env.get_template("blog/post.html")
 
 if BLOG_POSTS:
+    post_css_bundle, post_js_bundle = resolve_page_bundles("blog_post")
     for index, post in enumerate(BLOG_POSTS):
         slug = post.get("slug")
         if not slug:
@@ -332,7 +446,13 @@ if BLOG_POSTS:
 
         prev_post = BLOG_POSTS[index - 1] if index > 0 else None
         next_post = BLOG_POSTS[index + 1] if index + 1 < len(BLOG_POSTS) else None
-        html = post_template.render(post=post, prev_post=prev_post, next_post=next_post)
+        html = post_template.render(
+            post=post,
+            prev_post=prev_post,
+            next_post=next_post,
+            page_css_bundle=post_css_bundle,
+            page_js_bundle=post_js_bundle,
+        )
 
         dest = os.path.join(DIST, "blog", slug, "index.html")
         dest_dir = os.path.dirname(dest)
