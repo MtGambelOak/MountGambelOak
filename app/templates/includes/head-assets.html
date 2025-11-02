@@ -3,12 +3,10 @@
     window.__HOLIDAY_DETAILS__ = {{ holiday_details | tojson }};
   </script>
   {% endif %}
-  {% set favicon_stamp = (holiday_details.generatedAt or static_version) | replace(":", "") | replace("-", "") | replace("T", "")[:8] %}
-
   <script src="/static/js/theme-config.js?v={{ static_version }}"></script>
   <script src="/static/js/theme-preload.js?v={{ static_version }}"></script>
   <script defer src="/static/js/theme-init.js?v={{ static_version }}"></script>
-<link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg?v={{ favicon_stamp }}" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg?v={{ static_version }}" sizes="any">
   <link rel="alternate icon" type="image/x-icon" href="/static/images/default.ico">
   <link rel="stylesheet" href="/static/css/base.css?v={{ static_version }}" />
   <link rel="stylesheet" href="/static/css/theme.css?v={{ static_version }}" />
