@@ -32,7 +32,7 @@
   }
 
   const HOLIDAY_RANGES = [
-    { name: 'newyears',        start: '01-01', end: '01-04', emoji: '🎊' },
+    { name: 'newyears',        start: '01-01', end: '01-03', emoji: '🎊' },
     { name: 'mlkday',          nthWeekday: { month: 1, weekday: 1, nth: 3 }, emoji: '📜' },
     { name: 'valentine',       start: '02-14', end: '02-14', emoji: '💌' },
     { name: 'superbowl',       nthWeekday: { month: 2, weekday: 0, nth: 2 }, emoji: '🏈' },
